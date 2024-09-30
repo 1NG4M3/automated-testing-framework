@@ -1,0 +1,13 @@
+[
+  {
+    "description": "Yes",
+    "dlcName": "Yes",
+    "isDlcFree": true,
+    "price": 0,
+    "rating": 0,
+    "similarDlc": {
+      "dlcNameFromAnotherGame": "Buddy",
+      "isFree": true
+    }
+  }
+]

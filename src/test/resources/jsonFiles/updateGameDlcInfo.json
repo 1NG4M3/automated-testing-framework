@@ -1,0 +1,13 @@
+[
+  {
+    "description": "UpdateDlcInfo",
+    "dlcName": "Dima",
+    "isDlcFree": true,
+    "price": 0,
+    "rating": 0,
+    "similarDlc": {
+      "dlcNameFromAnotherGame": "Name",
+      "isFree": true
+    }
+  }
+]
