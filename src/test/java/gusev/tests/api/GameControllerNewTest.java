@@ -6,6 +6,7 @@ import gusev.models.RegUser;
 import gusev.services.UserService;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import static gusev.api.GameControllerNew.*;
 
 @Epic("Regression")
 @Feature("API")
+@Owner("Гусев Дмитрий Викторович")
 public class GameControllerNewTest extends BaseRestAssuredTest {
 
     private final UserService userService = new UserService();

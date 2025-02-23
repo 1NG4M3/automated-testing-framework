@@ -6,7 +6,6 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class CheckBoxPage {
-
     private final SelenideElement homeFolderArrow = $x("//*[@id='tree-node']/ol/li/span/button");
     private final SelenideElement homeFolderField = $x("//*[@id='tree-node']/ol/li/span/label");
     private final SelenideElement desktopFolderField = $x("//*[@id='tree-node']/ol/li/ol/li[1]/span/label");

@@ -4,6 +4,7 @@ import gusev.api.BaseRestAssuredTest;
 import gusev.dto.StatusRequestResponse;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.apache.http.ProtocolException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Epic("Regression")
 @Feature("API")
+@Owner("Гусев Дмитрий Викторович")
 public class StatusCodesControllerTest extends BaseRestAssuredTest {
 
     @Test

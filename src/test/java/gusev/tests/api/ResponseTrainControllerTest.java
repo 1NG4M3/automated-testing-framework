@@ -3,6 +3,7 @@ package gusev.tests.api;
 import gusev.api.BaseRestAssuredTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Epic("Regression")
 @Feature("API")
+@Owner("Гусев Дмитрий Викторович")
 public class ResponseTrainControllerTest extends BaseRestAssuredTest {
 
     @Test

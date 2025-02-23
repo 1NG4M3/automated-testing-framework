@@ -13,7 +13,7 @@ abstract public class BaseSelenideTest {
     /**
      * Инициализация selenide с настройками
      */
-    public void setUp(){
+    public void setUp() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
         Configuration.headless = false;
@@ -23,7 +23,7 @@ abstract public class BaseSelenideTest {
      * Выполнение метода перед каждым запуском тестов
      */
     @BeforeEach
-    public void init(){
+    public void init() {
         setUp();
     }
 
@@ -31,7 +31,7 @@ abstract public class BaseSelenideTest {
      * Выполнение метода после каждого закрытия тестов
      */
     @AfterEach
-    public void tearDown(){
+    public void tearDown() {
         Selenide.closeWebDriver();
     }
 }

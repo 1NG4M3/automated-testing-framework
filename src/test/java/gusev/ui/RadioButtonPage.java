@@ -6,7 +6,6 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class RadioButtonPage {
-
     private final SelenideElement radioButtonQuestionText = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[1]");
     private final SelenideElement yesButton = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[2]");
     private final SelenideElement impressiveButton = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]");
