@@ -242,4 +242,33 @@ public class ElementsTest extends BaseSelenideTest {
                 .assertUploadFile()
                 .assertUploadedFilePath(expectedUploadedFilePath);
     }
+
+    @Test
+    @DisplayName("Dynamic Properties visible button positive check")
+    public void positiveDynamicPropertiesVisibleButtonTest() {
+        String expectedMainText = "This text has random Id";
+        String expectedVisibleButtonText = "Visible After 5 Seconds";
+
+        page.goToDynamicProperties()
+                .assertMainText(expectedMainText)
+                .assertVisibleAfterFiveSecondsButton(expectedVisibleButtonText);
+    }
+
+    @Test
+    @DisplayName("Dynamic Properties enable button positive check")
+    public void positiveDynamicPropertiesEnableButtonTest() {
+        String expectedEnableButtonText = "Will enable 5 seconds";
+
+        page.goToDynamicProperties()
+                .assertEnableFiveSecondsButton(expectedEnableButtonText);
+    }
+
+    @Test
+    @DisplayName("Dynamic Properties color button positive check")
+    public void positiveDynamicPropertiesTest() {
+        String expectedColorButtonText = "Color Change";
+
+        page.goToDynamicProperties()
+                .assertColorChangeButton(expectedColorButtonText);
+    }
 }
