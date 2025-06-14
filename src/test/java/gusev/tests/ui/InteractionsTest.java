@@ -1,5 +1,6 @@
 package gusev.tests.ui;
 
+import gusev.ui.BaseSelenideTest;
 import gusev.ui.MainPage;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -16,7 +17,7 @@ import java.util.List;
 @Feature("UI")
 @Story("Interactions health check")
 @Owner("Гусев Дмитрий Викторович")
-public class InteractionsTest {
+public class InteractionsTest extends BaseSelenideTest {
 
     private MainPage page = new MainPage();
 

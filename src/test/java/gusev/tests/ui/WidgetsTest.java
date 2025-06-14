@@ -1,5 +1,6 @@
 package gusev.tests.ui;
 
+import gusev.ui.BaseSelenideTest;
 import gusev.ui.MainPage;
 import gusev.utils.DateTimeUtils;
 import io.qameta.allure.Epic;
@@ -13,7 +14,7 @@ import org.junit.jupiter.api.Test;
 @Feature("UI")
 @Story("Widgets health check")
 @Owner("Гусев Дмитрий Викторович")
-public class WidgetsTest {
+public class WidgetsTest extends BaseSelenideTest {
 
     private MainPage page = new MainPage();
 

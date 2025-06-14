@@ -1,5 +1,6 @@
 package gusev.tests.ui;
 
+import gusev.ui.BaseSelenideTest;
 import gusev.ui.MainPage;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.Test;
 @Feature("UI")
 @Story("Game Store Application health check")
 @Owner("Гусев Дмитрий Викторович")
-public class GameStoreApplicationTest {
+public class GameStoreApplicationTest extends BaseSelenideTest {
 
     private MainPage page = new MainPage();
 
