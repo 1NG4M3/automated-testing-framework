@@ -36,6 +36,20 @@ public class MainPage {
     private final SelenideElement accordian = $(byText("Accordian"));
     private final SelenideElement autoComplete = $(byText("Auto Complete"));
     private final SelenideElement datePicker = $(byText("Date Picker"));
+    private final SelenideElement slider = $(byText("Slider"));
+    private final SelenideElement progressBar = $(byText("Progress Bar"));
+    private final SelenideElement tabs = $(byText("Tabs"));
+    private final SelenideElement toolTips = $(byText("Tool Tips"));
+    private final SelenideElement menu = $(byText("Menu"));
+    private final SelenideElement selectMenu = $(byText("Select Menu"));
+    private final SelenideElement interactions = $(byText("Interactions"));
+    private final SelenideElement sortable = $(byText("Sortable"));
+    private final SelenideElement selectable = $(byText("Selectable"));
+    private final SelenideElement resizable = $(byText("Resizable"));
+    private final SelenideElement droppable = $(byText("Droppable"));
+    private final SelenideElement dragabble = $(byText("Dragabble"));
+    private final SelenideElement gameStoreApplication = $(byText("Game Store Application"));
+    private final SelenideElement linkPage = $(byText("Link Page"));
 
     public MainPage() {
         Selenide.open(PropertyManager.propHandler(PropertyConstants.CONFIG, "UI_HOST"));
@@ -147,5 +161,77 @@ public class MainPage {
         widgets.click();
         datePicker.click();
         return new DatePickerPage();
+    }
+
+    public SliderPage goToSlider() {
+        widgets.click();
+        slider.click();
+        return new SliderPage();
+    }
+
+    public ProgressBarPage goToProgressBar() {
+        widgets.click();
+        progressBar.click();
+        return new ProgressBarPage();
+    }
+
+    public TabsPage goToTabs() {
+        widgets.click();
+        tabs.click();
+        return new TabsPage();
+    }
+
+    public ToolTipsPage goToToolTips() {
+        widgets.click();
+        toolTips.click();
+        return new ToolTipsPage();
+    }
+
+    public MenuPage goToMenu() {
+        widgets.click();
+        menu.click();
+        return new MenuPage();
+    }
+
+    public SelectMenuPage goToSelectMenu() {
+        widgets.click();
+        selectMenu.click();
+        return new SelectMenuPage();
+    }
+
+    public SortablePage goToSortable() {
+        interactions.click();
+        sortable.click();
+        return new SortablePage();
+    }
+
+    public SelectablePage goToSelectable() {
+        interactions.click();
+        selectable.click();
+        return new SelectablePage();
+    }
+
+    public ResizablePage goToResizable() {
+        interactions.click();
+        resizable.click();
+        return new ResizablePage();
+    }
+
+    public DroppablePage goToDroppable() {
+        interactions.click();
+        droppable.click();
+        return new DroppablePage();
+    }
+
+    public DragabblePage goToDragabble() {
+        interactions.click();
+        dragabble.click();
+        return new DragabblePage();
+    }
+
+    public LinkPage goToLinkPage() {
+        gameStoreApplication.click();
+        linkPage.click();
+        return new LinkPage();
     }
 }
