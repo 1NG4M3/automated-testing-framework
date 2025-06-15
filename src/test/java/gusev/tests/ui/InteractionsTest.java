@@ -79,10 +79,10 @@ public class InteractionsTest extends BaseSelenideTest {
         String expectedText = "Drag me";
 
         page.goToDragabble()
-                .assertHeaderName(expectedHeaderText)
-                .assertSimpleTab(expectedText)
-                .assertAxisRestrictedTab()
-                .assertContainerRestrictedTab()
-                .assertCursorStyleTab();
+                .verifyHeaderName(expectedHeaderText)
+                .verifySimpleTab(expectedText)
+                .verifyAxisRestrictedTab()
+                .verifyContainerRestrictedTab()
+                .verifyCursorStyleTab();
     }
 }

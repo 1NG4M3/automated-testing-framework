@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static gusev.api.CreateAuthenticationToken.createAuthToken;
+import static gusev.utils.TestUserGenerator.generateUniqueUser;
 
 @Epic("Regression")
 @Feature("API")
@@ -23,8 +24,8 @@ public class JwtAuthenticationControllerTest extends BaseRestAssuredTest {
     @Test
     @DisplayName("Create user token")
     public void createTokenForUser() {
-        RegUser regUser = new RegUser("testUser9" + System.currentTimeMillis(), "oaimsdoi43353a33msd");
-        userService.registerUser(regUser);
+        RegUser regUser = generateUniqueUser();
+        userService.registerUser(regUser).statusCode(201);
         TokenApi newToken = createAuthToken(regUser.getLogin(), regUser.getPass());
         Assertions.assertNotNull(newToken.getToken());
     }

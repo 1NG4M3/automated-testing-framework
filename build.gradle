@@ -27,4 +27,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    maxParallelForks = 2
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
