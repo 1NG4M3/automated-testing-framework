@@ -15,6 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/1NG4M3/automated-testing-framework', branch: 'master'
+                sh 'chmod +x ./gradlew'
             }
         }
 
