@@ -3,7 +3,6 @@ pipeline {
 
     tools {
         jdk 'jdk17'
-        gradle 'gradle-8.8'
         allure 'Allure'
     }
 
@@ -29,30 +28,26 @@ pipeline {
             parallel {
                 stage('Run API tests') {
                     steps {
-                        dir("${env.WORKSPACE}") {
-                            sh '''
-                                sh 'pwd && ls -la' ./gradlew test --tests "*FilesControllerTest" \
-                                               --tests "*GameControllerTest" \
-                                               --tests "*JwtAuthenticationControllerTest" \
-                                               --tests "*ResponseTrainControllerTest" \
-                                               --tests "*StatusCodesControllerTest" \
-                                               --tests "*UserControllerNewTest"
-                            '''
-                        }
+                        sh '''
+                            ./gradlew test --tests "*FilesControllerTest" \
+                                           --tests "*GameControllerTest" \
+                                           --tests "*JwtAuthenticationControllerTest" \
+                                           --tests "*ResponseTrainControllerTest" \
+                                           --tests "*StatusCodesControllerTest" \
+                                           --tests "*UserControllerNewTest"
+                        '''
                     }
                 }
                 stage('Run UI tests') {
                     steps {
-                        dir("${env.WORKSPACE}") {
-                            sh '''
-                                sh 'pwd && ls -la' ./gradlew test --tests "*AlertsFrameWindowsTest" \
-                                               --tests "*ElementsTest" \
-                                               --tests "*FormsTest" \
-                                               --tests "*GameStoreApplicationTest" \
-                                               --tests "*InteractionsTest" \
-                                               --tests "*WidgetsTest"
-                            '''
-                        }
+                        sh '''
+                            ./gradlew test --tests "*AlertsFrameWindowsTest" \
+                                           --tests "*ElementsTest" \
+                                           --tests "*FormsTest" \
+                                           --tests "*GameStoreApplicationTest" \
+                                           --tests "*InteractionsTest" \
+                                           --tests "*WidgetsTest"
+                        '''
                     }
                 }
             }
