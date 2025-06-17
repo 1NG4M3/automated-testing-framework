@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         jdk 'jdk17'
+        gradle 'gradle-8.8'
         allure 'Allure'
     }
 
@@ -14,30 +15,22 @@ pipeline {
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/1NG4M3/automated-testing-framework', branch: 'master'
-                sh 'chmod +x ./gradlew'
             }
         }
 
-        stage('Check gradlew') {
+        stage('Fix gradlew') {
             steps {
                 sh '''
-                    echo "--- ls -la ---"
-                    ls -la
-                    echo "--- which gradlew ---"
-                    which ./gradlew || echo "gradlew not found in PATH"
-                    echo "--- file gradlew ---"
-                    file ./gradlew || echo "file error"
+                    echo "--- Convert gradlew to Unix format ---"
+                    apt-get update && apt-get install -y dos2unix || true
+                    dos2unix ./gradlew || true
+                    chmod +x ./gradlew
+                    ./gradlew --version
                 '''
             }
         }
 
-        stage('Debug files') {
-            steps {
-                sh 'pwd && ls -la'
-            }
-        }
-
-        stage('Parallel Tests') {
+        stage('Run Tests in Parallel') {
             parallel {
                 stage('Run API tests') {
                     steps {
