@@ -18,6 +18,19 @@ pipeline {
             }
         }
 
+        stage('Check gradlew') {
+            steps {
+                sh '''
+                    echo "--- ls -la ---"
+                    ls -la
+                    echo "--- which gradlew ---"
+                    which ./gradlew || echo "gradlew not found in PATH"
+                    echo "--- file gradlew ---"
+                    file ./gradlew || echo "file error"
+                '''
+            }
+        }
+
         stage('Debug files') {
             steps {
                 sh 'pwd && ls -la'
