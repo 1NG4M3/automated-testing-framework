@@ -19,6 +19,12 @@ pipeline {
             }
         }
 
+        stage('Debug files') {
+            steps {
+                sh 'pwd && ls -la'
+            }
+        }
+
         stage('Parallel Tests') {
             parallel {
                 stage('Run API tests') {
