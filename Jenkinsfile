@@ -30,25 +30,25 @@ pipeline {
                 stage('Run API tests') {
                     steps {
                         sh '''
-                                                  ./gradlew test --tests "*FilesControllerTest" \
-                                                                 --tests "*GameControllerTest" \
-                                                                 --tests "*JwtAuthenticationControllerTest" \
-                                                                 --tests "*ResponseTrainControllerTest" \
-                                                                 --tests "*StatusCodesControllerTest" \
-                                                                 --tests "*UserControllerNewTest"
-                                                '''
+                            ${WORKSPACE}/gradlew test --tests "*FilesControllerTest" \
+                                                      --tests "*GameControllerTest" \
+                                                      --tests "*JwtAuthenticationControllerTest" \
+                                                      --tests "*ResponseTrainControllerTest" \
+                                                      --tests "*StatusCodesControllerTest" \
+                                                      --tests "*UserControllerNewTest"
+                        '''
                     }
                 }
                 stage('Run UI tests') {
                     steps {
                         sh '''
-                                                  ./gradlew test --tests "*AlertsFrameWindowsTest" \
-                                                                 --tests "*ElementsTest" \
-                                                                 --tests "*FormsTest" \
-                                                                 --tests "*GameStoreApplicationTest" \
-                                                                 --tests "*InteractionsTest"
-                                                                 --tests "*WidgetsTest"
-                                                '''
+                            ${WORKSPACE}/gradlew test --tests "*AlertsFrameWindowsTest" \
+                                                      --tests "*ElementsTest" \
+                                                      --tests "*FormsTest" \
+                                                      --tests "*GameStoreApplicationTest" \
+                                                      --tests "*InteractionsTest" \
+                                                      --tests "*WidgetsTest"
+                        '''
                     }
                 }
             }
