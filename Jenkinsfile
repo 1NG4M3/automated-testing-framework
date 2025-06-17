@@ -29,26 +29,30 @@ pipeline {
             parallel {
                 stage('Run API tests') {
                     steps {
-                        sh '''
-                            ${WORKSPACE}/gradlew test --tests "*FilesControllerTest" \
-                                                      --tests "*GameControllerTest" \
-                                                      --tests "*JwtAuthenticationControllerTest" \
-                                                      --tests "*ResponseTrainControllerTest" \
-                                                      --tests "*StatusCodesControllerTest" \
-                                                      --tests "*UserControllerNewTest"
-                        '''
+                        dir("${env.WORKSPACE}") {
+                            sh '''
+                                ./gradlew test --tests "*FilesControllerTest" \
+                                               --tests "*GameControllerTest" \
+                                               --tests "*JwtAuthenticationControllerTest" \
+                                               --tests "*ResponseTrainControllerTest" \
+                                               --tests "*StatusCodesControllerTest" \
+                                               --tests "*UserControllerNewTest"
+                            '''
+                        }
                     }
                 }
                 stage('Run UI tests') {
                     steps {
-                        sh '''
-                            ${WORKSPACE}/gradlew test --tests "*AlertsFrameWindowsTest" \
-                                                      --tests "*ElementsTest" \
-                                                      --tests "*FormsTest" \
-                                                      --tests "*GameStoreApplicationTest" \
-                                                      --tests "*InteractionsTest" \
-                                                      --tests "*WidgetsTest"
-                        '''
+                        dir("${env.WORKSPACE}") {
+                            sh '''
+                                ./gradlew test --tests "*AlertsFrameWindowsTest" \
+                                               --tests "*ElementsTest" \
+                                               --tests "*FormsTest" \
+                                               --tests "*GameStoreApplicationTest" \
+                                               --tests "*InteractionsTest" \
+                                               --tests "*WidgetsTest"
+                            '''
+                        }
                     }
                 }
             }
