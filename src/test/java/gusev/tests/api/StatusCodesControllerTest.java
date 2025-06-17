@@ -2,74 +2,106 @@ package gusev.tests.api;
 
 import gusev.api.BaseRestAssuredTest;
 import gusev.dto.StatusRequestResponse;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
+import io.qameta.allure.*;
 import org.apache.http.ProtocolException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static gusev.api.StatusCodesController.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")
+@Story("Проверка различных HTTP-статусов API")
 public class StatusCodesControllerTest extends BaseRestAssuredTest {
 
     @Test
-    @DisplayName("Get bad request 400")
+    @DisplayName("Получение 400 Bad Request")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("12400")
     public void getBadRequest400Test() {
-        StatusRequestResponse badRequest = getBadRequest400();
-        Assertions.assertEquals(400, badRequest.getStatusCode());
+        StatusRequestResponse response = getBadRequest400();
+
+        assertAll(
+                () -> assertEquals(400, response.getStatusCode(), "Ожидался код 400"),
+                () -> assertNotNull(response.getDescription(), "Описание не должно быть null")
+        );
     }
 
     @Test
-    @DisplayName("Get created request 201")
+    @DisplayName("Получение 201 Created")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("12401")
     public void getCreatedTest() {
-        StatusRequestResponse createdRequest = getCreated201();
-        Assertions.assertEquals(201, createdRequest.getStatusCode());
-        Assertions.assertEquals("created", createdRequest.getDescription());
+        StatusRequestResponse response = getCreated201();
+
+        assertAll(
+                () -> assertEquals(201, response.getStatusCode(), "Ожидался код 201"),
+                () -> assertEquals("created", response.getDescription(), "Неверное описание")
+        );
     }
 
     @Test
-    @DisplayName("Get forbidden request 403")
+    @DisplayName("Получение 403 Forbidden")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("12402")
     public void getForbidden403Test() {
-        StatusRequestResponse body = getForbidden403();
-        Assertions.assertEquals(403, body.getStatusCode());
-        Assertions.assertEquals("Forbidden", body.getDescription());
+        StatusRequestResponse response = getForbidden403();
+
+        assertAll(
+                () -> assertEquals(403, response.getStatusCode(), "Ожидался код 403"),
+                () -> assertEquals("Forbidden", response.getDescription(), "Неверное описание")
+        );
     }
 
     @Test
-    @DisplayName("Get invalid url with 404 status code")
+    @DisplayName("Получение 404 Not Found по невалидному URL")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("12403")
     public void getInvalidUrl404Test() {
-        StatusRequestResponse body = getInvalidUrl404();
-        Assertions.assertEquals(404, body.getStatusCode());
-        Assertions.assertEquals("Not Found", body.getDescription());
+        StatusRequestResponse response = getInvalidUrl404();
+
+        assertAll(
+                () -> assertEquals(404, response.getStatusCode(), "Ожидался код 404"),
+                () -> assertEquals("Not Found", response.getDescription(), "Неверное описание")
+        );
     }
 
     @Test
-    @DisplayName("Get moved url with 301 status code")
+    @DisplayName("Получение 301 Moved Permanently")
+    @Severity(SeverityLevel.MINOR)
+    @TmsLink("12404")
     public void getMoved301Test() throws ProtocolException {
         StatusRequestResponse response = getMoved301();
-        assertNotNull(response);
-        Assertions.assertEquals(301, response.getStatusCode());
-        Assertions.assertEquals("Moved Permanently", response.getDescription());
+
+        assertAll(
+                () -> assertNotNull(response, "Ответ не должен быть null"),
+                () -> assertEquals(301, response.getStatusCode(), "Ожидался код 301"),
+                () -> assertEquals("Moved Permanently", response.getDescription(), "Неверное описание")
+        );
     }
 
     @Test
-    @DisplayName("Get no content with status code 204")
+    @DisplayName("Получение 204 No Content")
+    @Severity(SeverityLevel.TRIVIAL)
+    @TmsLink("12405")
     public void getNoContent204Test() {
         String response = getNoContent204();
-        Assertions.assertEquals("", response);
+
+        assertEquals("", response, "Ответ при 204 должен быть пустым");
     }
 
     @Test
-    @DisplayName("Get unauthorized request with status code 401")
+    @DisplayName("Получение 401 Unauthorized")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("12406")
     public void getUnauthorized401Test() {
         String response = getUnauthorized401();
-        assertNotNull(response);
-        Assertions.assertTrue(response.contains("Unauthorized"));
+
+        assertAll(
+                () -> assertNotNull(response, "Ответ не должен быть null"),
+                () -> assertTrue(response.contains("Unauthorized"), "Ожидалось содержимое 'Unauthorized'")
+        );
     }
 }

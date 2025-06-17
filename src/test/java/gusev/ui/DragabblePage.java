@@ -3,15 +3,17 @@ package gusev.ui;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Step;
 import org.openqa.selenium.interactions.Actions;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class DragabblePage {
+
     private final SelenideElement headerText = $x("//*[@class='main-header']");
+
     // Simple tab
     private final SelenideElement dragBox = $("#dragBox");
 
@@ -33,6 +35,7 @@ public class DragabblePage {
 
     private final Actions actions = new Actions(WebDriverRunner.getWebDriver());
 
+    @Step("Проверка заголовка: ожидаем '{expectedHeaderName}'")
     public DragabblePage verifyHeaderName(String expectedHeaderName) {
         headerText
                 .shouldBe(visible)
@@ -40,31 +43,40 @@ public class DragabblePage {
         return this;
     }
 
+    @Step("Проверка вкладки Simple: перетаскиваем элемент с текстом '{expectedText}'")
     public DragabblePage verifySimpleTab(String expectedText) {
         dragBox.shouldHave(text(expectedText));
-        actions.dragAndDropBy(dragBox, 200, 50).perform();
+        dragAndDropByOffset(dragBox, 200, 50);
         return this;
     }
 
+    @Step("Проверка вкладки Axis Restricted: перетаскиваем элементы по X и Y")
     public DragabblePage verifyAxisRestrictedTab() {
         axisRestriction.click();
-        actions.dragAndDropBy(restrictedX, 50,0).perform();
-        actions.dragAndDropBy(restrictedY, 0,20).perform();
+        dragAndDropByOffset(restrictedX, 50, 0);
+        dragAndDropByOffset(restrictedY, 0, 20);
         return this;
     }
 
+    @Step("Проверка вкладки Container Restricted: перетаскиваем оба контейнера")
     public DragabblePage verifyContainerRestrictedTab() {
         containerRestriction.click();
-        actions.dragAndDropBy(containerWithinBox, 225,10).perform();
-        actions.dragAndDropBy(containerWithinParent, 26,4).perform();
+        dragAndDropByOffset(containerWithinBox, 225, 10);
+        dragAndDropByOffset(containerWithinParent, 26, 4);
         return this;
     }
 
+    @Step("Проверка вкладки Cursor Style: перетаскиваем все элементы")
     public DragabblePage verifyCursorStyleTab() {
         cursorStyle.click();
-        actions.dragAndDropBy(cursorCenter, 200,-8).perform();
-        actions.dragAndDropBy(cursorTopLeft, 200,-20).perform();
-        actions.dragAndDropBy(cursorBottom, 200,-28).perform();
+        dragAndDropByOffset(cursorCenter, 200, -8);
+        dragAndDropByOffset(cursorTopLeft, 200, -20);
+        dragAndDropByOffset(cursorBottom, 200, -28);
         return this;
+    }
+
+    @Step("Перетаскиваем элемент на смещение X: {xOffset}, Y: {yOffset}")
+    private void dragAndDropByOffset(SelenideElement element, int xOffset, int yOffset) {
+        actions.dragAndDropBy(element, xOffset, yOffset).perform();
     }
 }

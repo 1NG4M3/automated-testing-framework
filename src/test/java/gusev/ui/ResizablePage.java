@@ -3,6 +3,7 @@ package gusev.ui;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
+import io.qameta.allure.Step;
 import org.openqa.selenium.interactions.Actions;
 
 import static com.codeborne.selenide.Condition.visible;
@@ -17,49 +18,60 @@ public class ResizablePage {
     private final SelenideElement unlimitedBox = $("#resizable");
     private final SelenideElement handleUnlimitedBox = unlimitedBox.$(".react-resizable-handle");
 
-    Actions actions = new Actions(WebDriverRunner.getWebDriver());
+    private final Actions actions = new Actions(WebDriverRunner.getWebDriver());
 
+    @Step("Проверка заголовка страницы: {expectedHeaderName}")
     public ResizablePage assertHeaderName(String expectedHeaderName) {
-        headerText
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedHeaderName));
+        headerText.shouldBe(visible)
+                .shouldHave(Condition.partialText(expectedHeaderName));
         return this;
     }
 
+    @Step("Проверка ограниченного resizable-блока с текстом: {expectedText}")
     public ResizablePage assertResizableBoxWithRestriction(String expectedText) {
-        resizableBoxWithRestriction
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedText));
-        // Попытка уменьшить ниже минимума
-        actions.clickAndHold(handle).moveByOffset(-100, -100).release().perform();
-        int[] sizeAfterShrink = getSize(resizableBoxWithRestriction);
-        assertTrue(sizeAfterShrink[0] >= 150, "Width ниже минимума");
-        assertTrue(sizeAfterShrink[1] >= 150, "Height ниже минимума");
+        resizableBoxWithRestriction.shouldBe(visible)
+                .shouldHave(Condition.partialText(expectedText));
 
-        // Попытка увеличить выше максимума
+        attemptResize(handle, -100, -100);
+        int[] sizeAfterShrink = getSize(resizableBoxWithRestriction);
+        assertTrue(sizeAfterShrink[0] >= 150, "Ширина меньше минимума");
+        assertTrue(sizeAfterShrink[1] >= 150, "Высота меньше минимума");
+
         resizableBoxWithRestriction.scrollIntoView(true);
-        actions.moveToElement(handle).clickAndHold().moveByOffset(400, 200).release().perform();
+        attemptResize(handle, 400, 200);
         int[] sizeAfterGrow = getSize(resizableBoxWithRestriction);
-        assertTrue(sizeAfterGrow[0] <= 500, "Width выше максимума");
-        assertTrue(sizeAfterGrow[1] <= 300, "Height выше максимума");
+        assertTrue(sizeAfterGrow[0] <= 500, "Ширина больше максимума");
+        assertTrue(sizeAfterGrow[1] <= 300, "Высота больше максимума");
+
         return this;
     }
 
+    @Step("Проверка неограниченного resizable-блока с текстом: {expectedText}")
     public ResizablePage assertResizableBox(String expectedText) {
-        unlimitedBox
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedText));
+        unlimitedBox.shouldBe(visible)
+                .shouldHave(Condition.partialText(expectedText));
         unlimitedBox.scrollIntoView(true);
+
         int[] sizeBefore = getSize(unlimitedBox);
-        actions.moveToElement(handleUnlimitedBox).clickAndHold().moveByOffset(300, 200).release().perform();
+        attemptResize(handleUnlimitedBox, 300, 200);
         int[] sizeAfter = getSize(unlimitedBox);
 
         assertTrue(sizeAfter[0] > sizeBefore[0], "Ширина не увеличилась");
         assertTrue(sizeAfter[1] > sizeBefore[1], "Высота не увеличилась");
+
         return this;
     }
 
-    protected static int[] getSize(SelenideElement element) {
+    @Step("Изменение размера элемента на ({xOffset}, {yOffset})")
+    private void attemptResize(SelenideElement handleElement, int xOffset, int yOffset) {
+        actions.moveToElement(handleElement)
+                .clickAndHold()
+                .moveByOffset(xOffset, yOffset)
+                .release()
+                .perform();
+    }
+
+    private static int[] getSize(SelenideElement element) {
         int width = Integer.parseInt(element.getCssValue("width").replace("px", "").trim());
         int height = Integer.parseInt(element.getCssValue("height").replace("px", "").trim());
         return new int[]{width, height};

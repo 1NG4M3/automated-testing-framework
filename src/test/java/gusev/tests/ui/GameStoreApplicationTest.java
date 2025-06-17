@@ -20,11 +20,9 @@ public class GameStoreApplicationTest extends BaseSelenideTest {
     @Test
     @DisplayName("Link Page positive check")
     public void positiveLinkPageTest() {
-        String expectedHeaderText = "Link Page";
-        String expectedMainText = "Follow the link to visit Game Store Application";
 
         page.goToLinkPage()
-                .assertHeaderName(expectedHeaderText)
-                .assertLinkRedirect(expectedMainText);
+                .assertHeaderName("Link Page")
+                .assertLinkRedirect("Follow the link to visit Game Store Application");
     }
 }

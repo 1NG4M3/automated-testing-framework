@@ -2,11 +2,10 @@ package gusev.tests.ui;
 
 import gusev.ui.BaseSelenideTest;
 import gusev.ui.MainPage;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Story;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
@@ -17,11 +16,11 @@ import java.io.FileNotFoundException;
 @Owner("Гусев Дмитрий Викторович")
 public class ElementsTest extends BaseSelenideTest {
 
-    private MainPage page = new MainPage();
+    private final MainPage page = new MainPage();
 
     @Test
     @DisplayName("Text box positive check")
-    public void positiveTextBoxTest() {
+    void positiveTextBoxTest() {
         String name = "Dmitry Gusev";
         String email = "testemail@mail.ru";
         String currentAddress = "Saint P.";
@@ -39,236 +38,133 @@ public class ElementsTest extends BaseSelenideTest {
                 .assertPermanentAddress(permanentAddress);
     }
 
-    @Test
-    @DisplayName("Check box check, include all folders and files")
-    public void positiveCheckBoxHomeFolderTest() {
-        String expectedResultFolders = "You have selected :\n" +
-                "home\n" +
-                "desktop\n" +
-                "notes\n" +
-                "commands\n" +
-                "documents\n" +
-                "workspace\n" +
-                "react\n" +
-                "angular\n" +
-                "veu\n" +
-                "office\n" +
-                "public\n" +
-                "private\n" +
-                "classified\n" +
-                "general\n" +
-                "downloads\n" +
-                "wordFile\n" +
-                "excelFile";
-
-        page.goToCheckBox()
-                .assertHomeFolderText(expectedResultFolders);
-    }
-
-    @Test
-    @DisplayName("Check box check include Desktop folder")
-    public void positiveCheckBoxDesktopFolderTest() {
-        String expectedResultDesktop = "You have selected :\n" +
-                "desktop\n" +
-                "notes\n" +
-                "commands";
-
-        page.goToCheckBox()
-                .assertDesktopFolderText(expectedResultDesktop);
-    }
-
-    @Test
-    @DisplayName("Check box check include Documents folder")
-    public void positiveCheckBoxDocumentsFolderTest() {
-        String expectedResultDocuments = "You have selected :\n" +
-                "documents\n" +
-                "workspace\n" +
-                "react\n" +
-                "angular\n" +
-                "veu\n" +
-                "office\n" +
-                "public\n" +
-                "private\n" +
-                "classified\n" +
-                "general";
-
-        page.goToCheckBox()
-                .assertDocumentsFolderText(expectedResultDocuments);
-    }
-
-    @Test
-    @DisplayName("Check box check include Downloads folder")
-    public void positiveCheckBoxDownloadsFolderTest() {
-        String expectedResultDownloads = "You have selected :\n" +
-                "downloads\n" +
-                "wordFile\n" +
-                "excelFile";
-
-        page.goToCheckBox()
-                .assertDownloadsFolderText(expectedResultDownloads);
+    @ParameterizedTest(name = "Check box check include {0} folder")
+    @CsvSource({
+            "Home,'You have selected :\nhome\ndesktop\nnotes\ncommands\ndocuments\nworkspace\nreact\nangular\nveu\noffice\npublic\nprivate\nclassified\ngeneral\ndownloads\nwordFile\nexcelFile'",
+            "Desktop,'You have selected :\ndesktop\nnotes\ncommands'",
+            "Documents,'You have selected :\ndocuments\nworkspace\nreact\nangular\nveu\noffice\npublic\nprivate\nclassified\ngeneral'",
+            "Downloads,'You have selected :\ndownloads\nwordFile\nexcelFile'"
+    })
+    void positiveCheckBoxFolderTest(String folderName, String expectedText) {
+        page.goToCheckBox();
+        switch (folderName) {
+            case "Home" -> page.goToCheckBox().assertHomeFolderText(expectedText);
+            case "Desktop" -> page.goToCheckBox().assertDesktopFolderText(expectedText);
+            case "Documents" -> page.goToCheckBox().assertDocumentsFolderText(expectedText);
+            case "Downloads" -> page.goToCheckBox().assertDownloadsFolderText(expectedText);
+        }
     }
 
     @Test
     @DisplayName("Radio button check main text")
-    public void positiveRadioButtonQuestionTest() {
-        String expectedQuestionText = "Do you like the site?";
-
+    void positiveRadioButtonQuestionTest() {
         page.goToRadioButton()
-                .assertRadioButtonMainText(expectedQuestionText);
+                .assertRadioButtonMainText("Do you like the site?");
     }
 
-    @Test
-    @DisplayName("Radio button check 'Yes' field")
-    public void positiveYesButtonResultTextTest() {
-        String expectedResultText = "You have selected \n" +
-                "Yes";
-
-        page.goToRadioButton()
-                .assertYesButtonResultText(expectedResultText);
-    }
-
-    @Test
-    @DisplayName("Radio button check 'Impressive' field")
-    public void positiveImpressiveButtonResultTextTest() {
-        String expectedResultText = "You have selected \n" +
-                "Impressive";
-
-        page.goToRadioButton()
-                .assertImpressiveButtonResultText(expectedResultText);
-    }
-
-    @Test
-    @DisplayName("Radio button check 'No' field")
-    public void positiveNoButtonTextTest() {
-        String expectedText = "No";
-
-        page.goToRadioButton()
-                .assertNoButtonText(expectedText);
+    @ParameterizedTest(name = "Radio button check '{0}' field")
+    @CsvSource({
+            "Yes,'You have selected \nYes'",
+            "Impressive,'You have selected \nImpressive'",
+            "No,'No'"
+    })
+    void positiveRadioButtonCheck(String buttonType, String expectedText) {
+        page.goToRadioButton();
+        switch (buttonType) {
+            case "Yes" -> page.goToRadioButton().assertYesButtonResultText(expectedText);
+            case "Impressive" -> page.goToRadioButton().assertImpressiveButtonResultText(expectedText);
+            case "No" -> page.goToRadioButton().assertNoButtonText(expectedText);
+        }
     }
 
     @Test
     @DisplayName("Web tables positive check")
-    public void positiveWebTablesRegistrationFormTest() {
-        String expectedText = "Web Tables";
-        String expectedFirstName = "Dmitry";
-        String expectedLastName = "Gusev";
-        String expectedEmail = "dmitryGusev@mail.ru";
-        String expectedAge = "30";
-        String expectedSalary = "300000";
-        String expectedDepartment = "Development Department";
+    void positiveWebTablesRegistrationFormTest() {
+        String firstName = "Dmitry";
+        String lastName = "Gusev";
+        String email = "dmitryGusev@mail.ru";
+        String age = "30";
+        String salary = "300000";
+        String department = "Development Department";
 
         page.goToWebTables()
-                .assertWebTablesMainText(expectedText)
+                .assertMainHeader("Web Tables")
                 .clickAddButton()
-                .setFirstName(expectedFirstName)
-                .setLastName(expectedLastName)
-                .setEmail(expectedEmail)
-                .setAge(expectedAge)
-                .setSalary(expectedSalary)
-                .setDepartment(expectedDepartment)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setAge(age)
+                .setSalary(salary)
+                .setDepartment(department)
                 .submit()
-                .assertWebTableInputData(expectedFirstName, expectedLastName, expectedEmail, expectedAge, expectedSalary, expectedDepartment)
-                .deleteRecord()
-                .assertThatRecordDeleted();
+                .assertLastRow(firstName, lastName, email, age, salary, department)
+                .deleteLastRow()
+                .assertTableIsEmpty();
     }
 
     @Test
     @DisplayName("Buttons positive check")
-    public void positiveButtonsTest() {
-        String expectedDoubleClickButtonText = "Double Click Me";
-        String expectedDoubleClickMessage = "You have done a double click";
-        String expectedRightClickButtonText = "Right Click Me";
-        String expectedRightClickMessage = "You have done a right click";
-        String expectedClickMeButtonText = "Click Me";
-        String expectedClickMeMessage = "You have done a dynamic click";
-
+    void positiveButtonsTest() {
         page.goToButtons()
-                .assertDoubleClickButton(expectedDoubleClickButtonText, expectedDoubleClickMessage)
-                .assertRightClickButton(expectedRightClickButtonText, expectedRightClickMessage)
-                .assertClickMeButton(expectedClickMeButtonText, expectedClickMeMessage);
+                .assertDoubleClickButton("Double Click Me", "You have done a double click")
+                .assertRightClickButton("Right Click Me", "You have done a right click")
+                .assertClickMeButton("Click Me", "You have done a dynamic click");
     }
 
     @Test
     @DisplayName("Links positive check")
-    public void positiveLinksTest() {
-        String expectedMainTextWithNewTab = "Following links will open new tab";
-        String expectedTextWithApiCall = "Following links will send an api call";
-        String expectedHomeLinkText = "Home";
-        String expectedCreatedApiCallText = "Created";
-
+    void positiveLinksTest() {
         page.goToLinks()
-                .assertMainTextWithNewTab(expectedMainTextWithNewTab)
-                .assertMainTextWithApiCall(expectedTextWithApiCall)
-                .assertHomeLink(expectedHomeLinkText)
-                .assertDynamicLink(expectedHomeLinkText)
-                .clickCreatedLink(expectedCreatedApiCallText);
+                .assertMainTextWithNewTab("Following links will open new tab")
+                .assertMainTextWithApiCall("Following links will send an api call")
+                .assertHomeLink("Home")
+                .assertDynamicLink("Home")
+                .clickCreatedLink("Created");
     }
 
     @Test
     @DisplayName("Broken Links and Images positive check")
-    public void positiveBrokenLinksAndImagesTest() {
-        String expectedValidImageText = "Valid image";
-        String expectedBrokenImageText = "Broken image";
-        String expectedValidLnkText = "Valid Link";
-        String expectedValidLink = "Click Here for Valid Link";
-        String expectedValidHref = "https://www.google.com/";
-        String expectedBrokenLinkText = "Broken Link";
-        String expectedBrokenLink = "Click Here for Broken Link";
-        String expectedBrokenHref = "http://the-internet.herokuapp.com/status_codes/500";
-        String expectedBrokenHrefAfterClick = "https://the-internet.herokuapp.com/status_codes/500";
-
+    void positiveBrokenLinksAndImagesTest() {
         page.goToBrokenLinksAndImages()
-                .assertValidImageText(expectedValidImageText)
+                .assertValidImageText("Valid image")
                 .assertValidImage()
-                .assertBrokenImageText(expectedBrokenImageText)
+                .assertBrokenImageText("Broken image")
                 .assertBrokenImage()
-                .assertValidLinkText(expectedValidLnkText)
-                .assertValidLink(expectedValidLink, expectedValidHref)
-                .assertBrokenLinkText(expectedBrokenLinkText)
-                .assertBrokenLink(expectedBrokenLink, expectedBrokenHref, expectedBrokenHrefAfterClick);
+                .assertValidLinkText("Valid Link")
+                .assertValidLink("Click Here for Valid Link", "https://www.google.com/")
+                .assertBrokenLinkText("Broken Link")
+                .assertBrokenLink("Click Here for Broken Link", "http://the-internet.herokuapp.com/status_codes/500", "https://the-internet.herokuapp.com/status_codes/500");
     }
 
     @Test
     @DisplayName("Upload and Download positive check")
-    public void positiveUploadAndDownloadTest() throws FileNotFoundException {
-        String expectedDownloadButtonText = "Download";
-        String expectedHref = "images/sticker.png";
-        String expectedSelectFileText = "Select a file";
-        String expectedUploadedFilePath = "C:\\fakepath\\MyPhotoForUpload.jpeg";
-
+    void positiveUploadAndDownloadTest() throws FileNotFoundException {
         page.goToUploadAndDownload()
-                .assertDownloadFile(expectedDownloadButtonText, expectedHref)
-                .assertSelectFileText(expectedSelectFileText)
-                .assertUploadFile()
-                .assertUploadedFilePath(expectedUploadedFilePath);
+                .assertDownloadFile("Download", "images/sticker.png")
+                .assertSelectFileText("Select a file")
+                .uploadFile()
+                .assertUploadedFilePath("C:\\fakepath\\MyPhotoForUpload.jpeg");
     }
 
     @Test
     @DisplayName("Dynamic Properties visible button positive check")
-    public void positiveDynamicPropertiesVisibleButtonTest() {
-        String expectedMainText = "This text has random Id";
-        String expectedVisibleButtonText = "Visible After 5 Seconds";
-
+    void positiveDynamicPropertiesVisibleButtonTest() {
         page.goToDynamicProperties()
-                .assertMainText(expectedMainText)
-                .assertVisibleAfterFiveSecondsButton(expectedVisibleButtonText);
+                .assertMainText("This text has random Id")
+                .assertVisibleAfterFiveSecondsButton("Visible After 5 Seconds");
     }
 
     @Test
     @DisplayName("Dynamic Properties enable button positive check")
-    public void positiveDynamicPropertiesEnableButtonTest() {
-        String expectedEnableButtonText = "Will enable 5 seconds";
-
+    void positiveDynamicPropertiesEnableButtonTest() {
         page.goToDynamicProperties()
-                .assertEnableFiveSecondsButton(expectedEnableButtonText);
+                .assertEnableFiveSecondsButton("Will enable 5 seconds");
     }
 
     @Test
     @DisplayName("Dynamic Properties color button positive check")
-    public void positiveDynamicPropertiesTest() {
-        String expectedColorButtonText = "Color Change";
-
+    void positiveDynamicPropertiesTest() {
         page.goToDynamicProperties()
-                .assertColorChangeButton(expectedColorButtonText);
+                .assertColorChangeButton("Color Change");
     }
 }

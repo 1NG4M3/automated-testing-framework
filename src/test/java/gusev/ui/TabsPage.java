@@ -2,68 +2,54 @@ package gusev.ui;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class TabsPage {
-    private final SelenideElement mainText = $x("//*[@class='main-header']");
-    private final SelenideElement whatTab = $x("//*[@id='demo-tab-what']");
-    private final SelenideElement originTab = $x("//*[@id='demo-tab-origin']");
-    private final SelenideElement useTab = $x("//*[@id='demo-tab-use']");
-    private final SelenideElement moreTab = $x("//*[@id='demo-tab-more']");
-    private final SelenideElement whatTabDesc = $x("//*[@id='demo-tabpane-what']/p");
-    private final SelenideElement originTabDesc = $x("//*[@id='demo-tabpane-origin']");
-    private final SelenideElement useTabDesc = $x("//*[@id='demo-tabpane-use']/p");
-    private final SelenideElement moreTabDesc = $x("//*[@id='demo-tabpane-more']");
+    private final SelenideElement header = $x("//*[@class='main-header']");
+    private final SelenideElement tabWhat = $x("//*[@id='demo-tab-what']");
+    private final SelenideElement tabOrigin = $x("//*[@id='demo-tab-origin']");
+    private final SelenideElement tabUse = $x("//*[@id='demo-tab-use']");
+    private final SelenideElement tabMore = $x("//*[@id='demo-tab-more']");
+    private final SelenideElement descWhat = $x("//*[@id='demo-tabpane-what']/p");
+    private final SelenideElement descOrigin = $x("//*[@id='demo-tabpane-origin']");
+    private final SelenideElement descUse = $x("//*[@id='demo-tabpane-use']/p");
+    private final SelenideElement descMore = $x("//*[@id='demo-tabpane-more']");
 
-    public TabsPage assertMainText(String expectedTabName) {
-        mainText
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabName));
+    @Step("Проверка заголовка страницы: {expectedText}")
+    public TabsPage assertHeader(String expectedText) {
+        header.shouldBe(visible).shouldHave(Condition.partialText(expectedText));
         return this;
     }
 
-    public TabsPage assertWhatTab(String expectedTabName, String expectedTabDescription) {
-        whatTab
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabName));
-        whatTabDesc
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabDescription));
+    @Step("Проверка вкладки 'What': название = {tabName}, описание = {description}")
+    public TabsPage assertWhatTab(String tabName, String description) {
+        return assertTabContent(tabWhat, descWhat, tabName, description, false);
+    }
+
+    @Step("Проверка вкладки 'Origin': название = {tabName}, описание = {description}")
+    public TabsPage assertOriginTab(String tabName, String description) {
+        return assertTabContent(tabOrigin, descOrigin, tabName, description, true);
+    }
+
+    @Step("Проверка вкладки 'Use': название = {tabName}, описание = {description}")
+    public TabsPage assertUseTab(String tabName, String description) {
+        return assertTabContent(tabUse, descUse, tabName, description, true);
+    }
+
+    @Step("Проверка вкладки 'More': название = {tabName}, описание недоступно")
+    public TabsPage assertMoreTab(String tabName) {
+        tabMore.shouldBe(visible).shouldHave(Condition.partialText(tabName));
+        descMore.shouldNotBe(visible).shouldBe(enabled);
         return this;
     }
 
-    public TabsPage assertOriginTab(String expectedTabName, String expectedTabDescription) {
-        originTab
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabName))
-                .click();
-        originTabDesc
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabDescription));
-        return this;
-    }
-
-    public TabsPage assertUseTab(String expectedTabName, String expectedTabDescription) {
-        useTab
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabName))
-                .click();
-        useTabDesc
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabDescription));
-        return this;
-    }
-
-    public TabsPage assertMoreTab(String expectedTabName) {
-        moreTab
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedTabName));
-        moreTabDesc
-                .shouldNotBe(visible)
-                .shouldBe(enabled);
+    private TabsPage assertTabContent(SelenideElement tab, SelenideElement content, String tabName, String description, boolean clickTab) {
+        tab.shouldBe(visible).shouldHave(Condition.partialText(tabName));
+        if (clickTab) tab.click();
+        content.shouldBe(visible).shouldHave(Condition.partialText(description));
         return this;
     }
 }

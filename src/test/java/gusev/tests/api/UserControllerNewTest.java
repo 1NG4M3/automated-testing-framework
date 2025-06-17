@@ -2,74 +2,98 @@ package gusev.tests.api;
 
 import gusev.api.BaseRestAssuredTest;
 import gusev.dto.RegistrationApi;
-import gusev.dto.TokenApi;
 import gusev.models.Info;
 import gusev.models.RegUser;
 import gusev.services.UserService;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 
 import static gusev.api.CreateAuthenticationToken.*;
+import static gusev.utils.TestUserGenerator.generateUniqueUser;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")
+@Story("UserController — работа с пользователями через токен")
+@TestMethodOrder(MethodOrderer.DisplayName.class)
 public class UserControllerNewTest extends BaseRestAssuredTest {
 
     private final UserService userService = new UserService();
+    private String token;
+    private RegUser currentUser;
 
-    @Test
-    @DisplayName("Delete user data")
-    public void deleteUserTest() {
-        RegUser regUser = new RegUser("testUser10" + System.currentTimeMillis(), "oaimsdoi43353a33msd");
-        userService.registerUser(regUser);
-        TokenApi newToken = createAuthToken(regUser.getLogin(), regUser.getPass());
-        RegistrationApi deleteUser = deleteUserInfoByToken(newToken.getToken());
-        Assertions.assertEquals("success",deleteUser.getInfo().getStatus());
-        Assertions.assertEquals("User successfully deleted",deleteUser.getInfo().getMessage());
+    @BeforeEach
+    void setUp() {
+        currentUser = generateUniqueUser(); // Вынес генерацию пользователя в отдельный метод
+        userService.registerUser(currentUser).statusCode(201);
+        token = createAuthToken(currentUser.getLogin(), currentUser.getPass()).getToken();
     }
 
     @Test
-    @DisplayName("Get logins of last 100 registered users")
+    @DisplayName("1. Удаление пользователя")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("UCN-001")
+    public void deleteUserTest() {
+        RegistrationApi response = deleteUserInfoByToken(token);
+
+        assertAll(
+                () -> assertEquals("success", response.getInfo().getStatus(), "Статус должен быть success"),
+                () -> assertEquals("User successfully deleted", response.getInfo().getMessage(), "Неверное сообщение")
+        );
+    }
+
+    @Test
+    @DisplayName("2. Получение логинов 100 последних пользователей")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("UCN-002")
     public void getLoginsOfLast100Users() {
         String usersLogins = get100LastUsersLogins();
-        Assertions.assertNotNull(usersLogins);
+        assertNotNull(usersLogins, "Список логинов не должен быть null");
+        assertTrue(usersLogins.contains("testUser"), "Список логинов должен содержать логины пользователей");
     }
 
     @Test
-    @DisplayName("Update user password test")
+    @DisplayName("3. Изменение пароля пользователя")
+    @Severity(SeverityLevel.CRITICAL)
+    @TmsLink("UCN-003")
     public void updateUserPasswordByToken() {
-        RegUser regUser = new RegUser("testUser10" + System.currentTimeMillis(), "oaimsdoi43353a33msd");
-        userService.registerUser(regUser);
-        TokenApi newToken = createAuthToken(regUser.getLogin(), regUser.getPass());
-        RegistrationApi updatedUser = updateUserPassword(newToken.getToken(), "77889991090");
-        Assertions.assertTrue(updatedUser.getInfo().getMessage().contains("User password successfully changed"));
+        String newPassword = "newSecurePassword456";
+        RegistrationApi updated = updateUserPassword(token, newPassword);
+
+        assertTrue(updated.getInfo().getMessage().contains("User password successfully changed"),
+                "Ожидалось сообщение об успешной смене пароля");
     }
 
     @Test
-    @DisplayName("Get user information tests")
+    @DisplayName("4. Получение информации о пользователе по токену")
+    @Severity(SeverityLevel.NORMAL)
+    @TmsLink("UCN-004")
     public void userInfoByToken() {
-        RegUser regUser = new RegUser("testUser10" + System.currentTimeMillis(), "oaimsdoi43353a33msd");
-        userService.registerUser(regUser);
-        TokenApi newToken = createAuthToken(regUser.getLogin(), regUser.getPass());
-        RegistrationApi.RegisterData infoUser = getUserInfoByToken(newToken.getToken());
-        Assertions.assertEquals(regUser.getLogin(), infoUser.getLogin());
-        Assertions.assertEquals(regUser.getPass(), infoUser.getPass());
+        RegistrationApi.RegisterData userInfo = getUserInfoByToken(token);
+
+        assertAll(
+                () -> assertEquals(currentUser.getLogin(), userInfo.getLogin(), "Логины не совпадают"),
+                () -> assertEquals(currentUser.getPass(), userInfo.getPass(), "Пароли не совпадают")
+        );
     }
 
     @Test
-    @DisplayName("Register user tests")
+    @DisplayName("5. Регистрация нового пользователя")
+    @Severity(SeverityLevel.BLOCKER)
+    @TmsLink("UCN-005")
     public void registerNewUserUpdated() {
-        RegUser regUser = new RegUser("testUser" + System.currentTimeMillis(), "oaimsdoiamsd");
-        Info info = userService.registerUser(regUser)
-                .statusCode(201)
-                .extract().jsonPath().getObject("info", Info.class);
+        RegUser newUser = generateUniqueUser();
 
-        Assertions.assertEquals("success", info.getStatus());
-        Assertions.assertEquals("User created", info.getMessage());
+        Info info = userService.registerUser(newUser)
+                .statusCode(201)
+                .extract()
+                .jsonPath()
+                .getObject("info", Info.class);
+
+        assertAll(
+                () -> assertEquals("success", info.getStatus(), "Ожидался статус 'success'"),
+                () -> assertEquals("User created", info.getMessage(), "Неверное сообщение о создании пользователя")
+        );
     }
 }

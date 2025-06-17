@@ -7,6 +7,7 @@ import gusev.services.UserService;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ public class JwtAuthenticationControllerTest extends BaseRestAssuredTest {
 
     @Test
     @DisplayName("Create user token")
+    @Step("Получение токена")
     public void createTokenForUser() {
         RegUser regUser = generateUniqueUser();
         userService.registerUser(regUser).statusCode(201);

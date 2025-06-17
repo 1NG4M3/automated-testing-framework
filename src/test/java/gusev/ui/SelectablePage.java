@@ -3,6 +3,7 @@ package gusev.ui;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
 import java.util.List;
 
@@ -13,42 +14,49 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SelectablePage {
     private final SelenideElement headerText = $x("//*[@class='main-header']");
-    private final ElementsCollection verticalListContainer = $$("#verticalListContainer .list-group-item");
+    private final ElementsCollection listTabItems = $$("#verticalListContainer .list-group-item");
     private final SelenideElement gridTab = $x("//*[@id='demo-tab-grid']");
-    private final ElementsCollection gridTabpane = $$("#gridContainer .list-group-item");
+    private final ElementsCollection gridTabItems = $$("#gridContainer .list-group-item");
 
+    @Step("Проверка заголовка страницы: {expectedHeaderName}")
     public SelectablePage assertHeaderName(String expectedHeaderName) {
-        headerText
-                .shouldBe(visible)
-                .should(Condition.partialText(expectedHeaderName));
+        headerText.shouldBe(visible)
+                .shouldHave(Condition.partialText(expectedHeaderName));
         return this;
     }
 
-    public SelectablePage assertListTab(List<String> list) {
-        assertEquals(list.toString(), verticalListContainer.texts().toString(), "Ожидаемое значение не совпадает с актуальным: " + verticalListContainer.texts());
-        checkBackgroundAndTextColorChangesOnClick(verticalListContainer);
+    @Step("Проверка значений и интерактивности в List вкладке")
+    public SelectablePage assertListTab(List<String> expectedItems) {
+        assertEquals(expectedItems, listTabItems.texts(),
+                "Несовпадение элементов в List табе. Актуальное: " + listTabItems.texts());
+        checkStyleChangeOnClick(listTabItems);
         return this;
     }
 
-    public SelectablePage assertGridTab(List<String> listGrid) {
-        gridTab
-                .shouldBe(visible)
-                .click();
-        assertEquals(listGrid.toString(), gridTabpane.texts().toString(), "Ожидаемое значение не совпадает с актуальным: " + gridTabpane.texts());
-        checkBackgroundAndTextColorChangesOnClick(gridTabpane);
+    @Step("Проверка значений и интерактивности в Grid вкладке")
+    public SelectablePage assertGridTab(List<String> expectedItems) {
+        gridTab.shouldBe(visible).click();
+        assertEquals(expectedItems, gridTabItems.texts(),
+                "Несовпадение элементов в Grid табе. Актуальное: " + gridTabItems.texts());
+        checkStyleChangeOnClick(gridTabItems);
         return this;
     }
 
-    public static void checkBackgroundAndTextColorChangesOnClick(ElementsCollection elements) {
+    @Step("Проверка изменения стиля при клике на элементы")
+    private void checkStyleChangeOnClick(ElementsCollection elements) {
         for (SelenideElement element : elements) {
-            String initialBackgroundColor = element.getCssValue("background-color");
-            String initialColor = element.getCssValue("color");
+            String text = element.getText();
+            String initialBackground = element.getCssValue("background-color");
+            String initialTextColor = element.getCssValue("color");
+
             element.click();
             element.shouldHave(Condition.cssClass("active"));
-            String afterClickBackgroundColor = element.getCssValue("background-color");
-            String afterClickColor = element.getCssValue("color");
-            assertNotEquals(initialBackgroundColor, afterClickBackgroundColor, "Фон не изменился при клике на: " + element.getText());
-            assertNotEquals(initialColor, afterClickColor, "Цвет текста не изменился при клике на: " + element.getText());
+
+            String newBackground = element.getCssValue("background-color");
+            String newTextColor = element.getCssValue("color");
+
+            assertNotEquals(initialBackground, newBackground, "Фон не изменился при клике на элемент: " + text);
+            assertNotEquals(initialTextColor, newTextColor, "Цвет текста не изменился при клике на элемент: " + text);
         }
     }
 }

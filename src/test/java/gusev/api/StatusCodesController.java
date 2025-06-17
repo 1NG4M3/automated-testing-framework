@@ -1,66 +1,38 @@
 package gusev.api;
 
 import gusev.dto.StatusRequestResponse;
+import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import lombok.Data;
-import org.apache.http.ProtocolException;
+import lombok.experimental.UtilityClass;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.notNullValue;
 
-@Data
+@UtilityClass
 public class StatusCodesController {
 
+    @Step("Получение 400 Bad Request")
     public static StatusRequestResponse getBadRequest400() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/api/bad-request")
-                .then()
-                .statusCode(400)
-                .extract()
-                .response();
-        return response.as(StatusRequestResponse.class);
+        return sendJsonGet("/api/bad-request", 400);
     }
 
+    @Step("Получение 201 Created")
     public static StatusRequestResponse getCreated201() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/api/created")
-                .then()
-                .statusCode(201)
-                .extract()
-                .response();
-        return response.as(StatusRequestResponse.class);
+        return sendJsonGet("/api/created", 201);
     }
 
+    @Step("Получение 403 Forbidden")
     public static StatusRequestResponse getForbidden403() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/api/forbidden")
-                .then()
-                .statusCode(403)
-                .extract()
-                .response();
-        return response.as(StatusRequestResponse.class);
+        return sendJsonGet("/api/forbidden", 403);
     }
 
+    @Step("Получение 404 Not Found")
     public static StatusRequestResponse getInvalidUrl404() {
-        Response response = given()
-                .contentType(ContentType.JSON)
-                .when()
-                .get("/api/invalid-url")
-                .then()
-                .statusCode(404)
-                .extract()
-                .response();
-        return response.as(StatusRequestResponse.class);
+        return sendJsonGet("/api/invalid-url", 404);
     }
 
-    public static StatusRequestResponse getMoved301() throws ProtocolException {
+    @Step("Получение 301 Moved Permanently (без редиректа)")
+    public static StatusRequestResponse getMoved301() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .redirects().follow(false)
@@ -73,6 +45,7 @@ public class StatusCodesController {
         return response.as(StatusRequestResponse.class);
     }
 
+    @Step("Получение 204 No Content")
     public static String getNoContent204() {
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -85,6 +58,7 @@ public class StatusCodesController {
         return response.asPrettyString();
     }
 
+    @Step("Получение 401 Unauthorized")
     public static String getUnauthorized401() {
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -95,5 +69,17 @@ public class StatusCodesController {
                 .extract()
                 .response();
         return response.asPrettyString();
+    }
+
+    private static StatusRequestResponse sendJsonGet(String endpoint, int expectedStatusCode) {
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(endpoint)
+                .then()
+                .statusCode(expectedStatusCode)
+                .extract()
+                .response();
+        return response.as(StatusRequestResponse.class);
     }
 }

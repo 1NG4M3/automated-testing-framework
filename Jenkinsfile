@@ -2,7 +2,9 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK 17' // Указать, как настроено в Jenkins → Global Tool Configuration
+        jdk 'jdk17'
+        gradle 'gradle-8.8'
+        allure 'Allure'
     }
 
     environment {

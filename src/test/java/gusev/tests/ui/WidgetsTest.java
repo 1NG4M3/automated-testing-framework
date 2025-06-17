@@ -10,220 +10,115 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static gusev.utils.Texts.*;
+
 @Epic("Regression")
 @Feature("UI")
 @Story("Widgets health check")
 @Owner("Гусев Дмитрий Викторович")
 public class WidgetsTest extends BaseSelenideTest {
 
-    private MainPage page = new MainPage();
+    private final MainPage page = new MainPage();
 
+    // -------- Accordian Section --------
     @Test
-    @DisplayName("Accordian positive check")
-    public void positiveAccordianTest() {
-        String expectedMainText = "Accordian";
-        String expectedSection1Heading = "What is Lorem Ipsum?";
-        String expectedSection2Heading = "Where does it come from?";
-        String expectedSection3Heading = "Why do we use it?";
-        String expectedSection1Content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry." +
-                " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer" +
-                " took a galley of type and scrambled it to make a type specimen book. It has survived not only five" +
-                " centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was" +
-                " popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and" +
-                " more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-        String expectedSection2Content = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has" +
-                " roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard" +
-                " McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure" +
-                " Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in" +
-                " classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and" +
-                " 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45" +
-                " BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first" +
-                " line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
-                "\n" +
-                "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested." +
-                " Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in" +
-                " their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.";
-        String expectedSection3Content = "It is a long established fact that a reader will be distracted by the readable" +
-                " content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a" +
-                " more-or-less normal distribution of letters, as opposed to using 'Content here, content here'," +
-                " making it look like readable English. Many desktop publishing packages and web page editors now use" +
-                " Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites" +
-                " still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes" +
-                " on purpose (injected humour and the like).";
-
+    @DisplayName("Check Accordian content")
+    void checkAccordian() {
         page.goToAccordian()
-                .assertMainText(expectedMainText)
-                .assertFirstAccordian(expectedSection1Heading, expectedSection1Content)
-                .assertSecondAccordian(expectedSection2Heading, expectedSection2Content)
-                .assertThirdAccordian(expectedSection3Heading, expectedSection3Content);
+                .assertMainText(ACCORDIAN_MAIN_TEXT)
+                .assertFirstAccordian(ACCORDIAN_TITLE_1, ACCORDIAN_SECTION_1)
+                .assertSecondAccordian(ACCORDIAN_TITLE_2, ACCORDIAN_SECTION_2)
+                .assertThirdAccordian(ACCORDIAN_TITLE_3, ACCORDIAN_SECTION_3);
     }
 
+    // -------- Auto Complete Section --------
     @Test
-    @DisplayName("Auto Complete positive check")
-    public void positiveAutoCompleteTest() {
-        String expectedMainText = "Auto Complete";
-        String expectedAutoCompleteMultipleDescription = "Type multiple color names";
-        String expectedAutoCompleteSingleDescription = "Type single color name";
-        String expectedFirstFullColorName = "Red";
-        String expectedSecondFullColorName = "Green";
-        String expectedSecondCutColorName = "Gr";
-
+    @DisplayName("Check Auto Complete behavior")
+    void checkAutoComplete() {
         page.goToAutoComplete()
-                .assertMainText(expectedMainText)
-                .assertAutoCompleteMultiple(expectedAutoCompleteMultipleDescription, expectedFirstFullColorName, expectedSecondCutColorName, expectedSecondFullColorName)
-                .assertAutoCompleteSingle(expectedAutoCompleteSingleDescription, expectedSecondFullColorName);
+                .assertMainText(AUTO_COMPLETE_MAIN_TEXT)
+                .assertAutoCompleteMultiple(AUTO_COMPLETE_MULTI_LABEL, AUTO_COMPLETE_COLOR_1, AUTO_COMPLETE_COLOR_PARTIAL, AUTO_COMPLETE_COLOR_2)
+                .assertAutoCompleteSingle(AUTO_COMPLETE_SINGLE_LABEL, AUTO_COMPLETE_COLOR_2);
     }
 
+    // -------- Date Picker Section --------
     @Test
-    @DisplayName("Date Picker positive check")
-    public void positiveDatePickerTest() {
-        String expectedMainText = "Date Picker";
-        String expectedDate = DateTimeUtils.getCurrentDate();
-        String expectedDateAndTime = DateTimeUtils.getCurrentDateTime();
-        String formattedNewDate = DateTimeUtils.getFutureDate(1, 1, 1);
-        String formattedNewDateTime = DateTimeUtils.getFutureDateTime(1, 1, 1, 1, 30);
+    @DisplayName("Check Date Picker functionality")
+    void checkDatePicker() {
+        String today = DateTimeUtils.getCurrentDate();
+        String now = DateTimeUtils.getCurrentDateTime();
+        String futureDate = DateTimeUtils.getFutureDate(1, 1, 1);
+        String futureDateTime = DateTimeUtils.getFutureDateTime(1, 1, 1, 1, 30);
 
         page.goToDatePicker()
-                .assertMainText(expectedMainText)
-                .assertDateSelect(expectedDate, formattedNewDate)
-                .assertDateAndTimeSelect(expectedDateAndTime, formattedNewDateTime);
+                .assertMainText(DATE_PICKER_MAIN_TEXT)
+                .assertDateSelect(today, futureDate)
+                .assertDateAndTimeSelect(now, futureDateTime);
     }
 
+    // -------- Slider Section --------
     @Test
-    @DisplayName("Slider positive check")
-    public void positiveSliderTest() {
-        String expectedMainText = "Slider";
-        String expectedValue = "50";
-
+    @DisplayName("Check Slider default value")
+    void checkSlider() {
         page.goToSlider()
-                .assertMainText(expectedMainText)
-                .assertSliderValue(expectedValue);
+                .assertHeaderText(SLIDER_MAIN_TEXT)
+                .setSliderValue(SLIDER_DEFAULT_VALUE);
     }
 
+    // -------- Progress Bar Section --------
     @Test
-    @DisplayName("Progress Bar positive check")
-    public void positiveProgressBarTest() {
-        String expectedMainText = "Progress Bar";
-        String expectedButtonStartText = "Start";
-        String expectedButtonStopText = "Stop";
-        String expectedButtonResetText = "Reset";
-        String expectedFirstValue = "50%";
-        String expectedSecondValue = "100%";
-        Integer expectedTime = 4900;
-
+    @DisplayName("Check Progress Bar flow")
+    void checkProgressBar() {
         page.goToProgressBar()
-                .assertMainText(expectedMainText)
-                .checkProgressBar(expectedButtonStartText, expectedButtonStopText, expectedButtonResetText, expectedFirstValue, expectedSecondValue, expectedTime);
+                .assertMainText(PROGRESS_BAR_MAIN_TEXT)
+                .checkProgressBar(PROGRESS_BAR_START, PROGRESS_BAR_STOP, PROGRESS_BAR_RESET, PROGRESS_BAR_HALF, PROGRESS_BAR_FULL, PROGRESS_BAR_TIMEOUT_MS);
     }
 
+    // -------- Tabs Section --------
     @Test
-    @DisplayName("Tabs positive check")
-    public void positiveTabsTest() {
-        String expectedMainText = "Tabs";
-        String expectedWhatTabName = "What";
-        String expectedOriginTabName = "Origin";
-        String expectedUseTabName = "Use";
-        String expectedMoreTabName = "More";
-        String expectedWhatTabDescription = "Lorem Ipsum is simply dummy text of the printing and typesetting industry." +
-                " Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer " +
-                "took a galley of type and scrambled it to make a type specimen book. It has survived not only five" +
-                " centuries, but also the leap into electronic typesetting, remaining essentially unchanged." +
-                " It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages," +
-                " and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-        String expectedOriginTabDescription = "Contrary to popular belief, Lorem Ipsum is not simply random text." +
-                " It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old." +
-                " Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more" +
-                " obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word" +
-                " in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32" +
-                " and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written" +
-                " in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance." +
-                " The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n" +
-                "\n" +
-                "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested." +
-                " Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in" +
-                " their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.";
-        String expectedUseTabDescription = "It is a long established fact that a reader will be distracted by the" +
-                " readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has" +
-                " a more-or-less normal distribution of letters, as opposed to using 'Content here, content here'," +
-                " making it look like readable English. Many desktop publishing packages and web page editors now use" +
-                " Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites" +
-                " still in their infancy. Various versions have evolved over the years, sometimes by accident," +
-                " sometimes on purpose (injected humour and the like).";
-
+    @DisplayName("Check Tabs content")
+    void checkTabs() {
         page.goToTabs()
-                .assertMainText(expectedMainText)
-                .assertWhatTab(expectedWhatTabName, expectedWhatTabDescription)
-                .assertOriginTab(expectedOriginTabName, expectedOriginTabDescription)
-                .assertUseTab(expectedUseTabName, expectedUseTabDescription)
-                .assertMoreTab(expectedMoreTabName);
+                .assertHeader(TABS_MAIN_TEXT)
+                .assertWhatTab(TABS_WHAT_TITLE, TABS_WHAT)
+                .assertOriginTab(TABS_ORIGIN_TITLE, TABS_ORIGIN)
+                .assertUseTab(TABS_USE_TITLE, TABS_USE)
+                .assertMoreTab(TABS_MORE_TITLE);
     }
 
+    // -------- Tool Tips Section --------
     @Test
-    @DisplayName("Tool Tips positive check")
-    public void positiveToolTipsTest() {
-        String expectedHeaderText = "Tool Tips";
-        String expectedButtonName = "Hover me to see";
-        String expectedButtonToolTipText = "You hovered over the Button";
-        String expectedInputFieldName = "Hover me to see";
-        String expectedInputToolTipText = "You hovered over the text field";
-        String expectedMainText = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a" +
-                " piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock," +
-                " a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words," +
-                " consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature," +
-                " discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus" +
-                " Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a" +
-                " treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum," +
-                " \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.";
-        String expectedContraryName = "Contrary";
-        String expectedContraryToolTipText = "You hovered over the Contrary";
-        String expectedSecondLinkName = "1.10.32";
-        String expectedSecondLinkToolTipText = "You hovered over the 1.10.32";
-        String expectedInputText = "Test Text";
-        String expectedColorOfLinks = "rgba(0, 123, 255, 1)";
-
+    @DisplayName("Check Tool Tips")
+    void checkToolTips() {
         page.goToToolTips()
-                .assertHeaderName(expectedHeaderText)
-                .assertToolTipButton(expectedButtonName, expectedButtonToolTipText)
-                .assertInputField(expectedInputFieldName, expectedInputToolTipText, expectedInputText)
-                .assertMainText(expectedMainText, expectedContraryName, expectedContraryToolTipText, expectedSecondLinkName, expectedSecondLinkToolTipText, expectedColorOfLinks);
+                .assertHeaderName(TOOL_TIP_HEADER)
+                .assertToolTipButton(TOOL_TIP_BUTTON_LABEL, TOOL_TIP_BUTTON_TEXT)
+                .assertInputField(TOOL_TIP_INPUT_LABEL, TOOL_TIP_INPUT_TEXT, TOOL_TIP_INPUT_VALUE)
+                .assertMainText(TOOL_TIP_MAIN, TOOL_TIP_CONTRARY, TOOL_TIP_CONTRARY_TEXT, TOOL_TIP_NUMBER, TOOL_TIP_NUMBER_TEXT, TOOL_TIP_COLOR);
     }
 
+    // -------- Menu Section --------
     @Test
-    @DisplayName("Menu positive check")
-    public void positiveMenuTest() {
-        String expectedHeaderText = "Menu";
-        String mainItem1 = "Main Item 1";
-        String mainItem2 = "Main Item 2";
-        String mainItem3 = "Main Item 3";
-        String subItem = "Sub Item";
-        String subSubList = "SUB SUB LIST »";
-        String subSubItem1 = "Sub Sub Item 1";
-        String subSubItem2 = "Sub Sub Item 2";
-
+    @DisplayName("Check Menu items visibility")
+    void checkMenu() {
         page.goToMenu()
-                .assertHeaderName(expectedHeaderText)
-                .assertMainItemsBackgroundColor(mainItem1, mainItem2, mainItem3)
-                .assertInvisibilitySubMenus(subItem, subSubList, subSubItem1, subSubItem2)
-                .assertVisibilitySubMenuMainItem2(mainItem2, subItem, subSubList)
-                .assertVisibilitySubMenuOfSubSubList(subSubList, subSubItem1, subSubItem2);
+                .assertHeaderName(MENU_HEADER)
+                .assertMainItemsBackgroundColor(MENU_MAIN_ITEM_1, MENU_MAIN_ITEM_2, MENU_MAIN_ITEM_3)
+                .assertInvisibilitySubMenus(MENU_SUB_ITEM, MENU_SUB_LIST, MENU_SUB_SUB_ITEM_1, MENU_SUB_SUB_ITEM_2)
+                .assertVisibilitySubMenuMainItem2(MENU_MAIN_ITEM_2, MENU_SUB_ITEM, MENU_SUB_LIST)
+                .assertVisibilitySubMenuOfSubSubList(MENU_SUB_LIST, MENU_SUB_SUB_ITEM_1, MENU_SUB_SUB_ITEM_2);
     }
 
+    // -------- Select Menu Section --------
     @Test
-    @DisplayName("Select Menu positive check")
-    public void positiveSelectMenuTest() {
-        String expectedHeaderText = "Select Menu";
-        String selectValueMenu = "A root option";
-        String selectOneMenu = "Dr.";
-        String oldStyleSelectMenu = "1";
-        String multiSelectDropDownMenu = "Red";
-        String standardMultiselectMenu = "audi";
-
+    @DisplayName("Check Select Menu options")
+    void checkSelectMenu() {
         page.goToSelectMenu()
-                .assertHeaderName(expectedHeaderText)
-                .assertSelectValueMenu(selectValueMenu)
-                .assertSelectOneMenu(selectOneMenu)
-                .assertOldStyleSelectMenu(oldStyleSelectMenu)
-                .assertMultiselectDropDownMenu(multiSelectDropDownMenu)
-                .assertStandardMultiselectMenu(standardMultiselectMenu);
+                .assertHeaderName(SELECT_MENU_HEADER)
+                .selectValue(SELECT_MENU_VALUE)
+                .selectOne(SELECT_MENU_ONE)
+                .selectOldStyle(SELECT_MENU_OLD_STYLE)
+                .selectFromMultiDropdown(SELECT_MENU_MULTI_DROP, SELECT_MENU_MULTI_DROP_EXPECTED_ID_VALUE)
+                .selectFromStandardMulti(SELECT_MENU_STANDARD);
     }
 }

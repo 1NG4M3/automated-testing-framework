@@ -1,95 +1,111 @@
 package gusev.ui;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 public class WebTablesPage {
+
     private final SelenideElement addButton = $x("//*[@id='addNewRecordButton']");
     private final SelenideElement submitButton = $x("//*[@id='submit']");
     private final SelenideElement firstNameField = $x("//*[@id='firstName']");
-    private final SelenideElement actualFirstNameField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[1]");
     private final SelenideElement lastNameField = $x("//*[@id='lastName']");
-    private final SelenideElement actualLastNameField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[2]");
     private final SelenideElement emailField = $x("//*[@id='userEmail']");
-    private final SelenideElement actualEmailField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[4]");
     private final SelenideElement ageField = $x("//*[@id='age']");
-    private final SelenideElement actualAgeField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[3]");
     private final SelenideElement salaryField = $x("//*[@id='salary']");
-    private final SelenideElement actualSalaryField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[5]");
     private final SelenideElement departmentField = $x("//*[@id='department']");
-    private final SelenideElement actualDepartmentField = $x("//*[@id='app']/div/div/div[2]/div[2]/div[1]/div[3]/div[1]/div[2]/div[4]/div/div[6]");
-    private final SelenideElement webTablesMainText = $x("//*[@id='app']/div/div/div[1]/div");
-    private final SelenideElement deleteRecordButton = $x("//*[@id='delete-record-4']");
+    private final ElementsCollection tableRows = $$x("//div[@class='rt-tbody']/div[@class='rt-tr-group']");
+    private final SelenideElement mainHeader = $x("//*[@id='app']/div/div/div[1]/div");
 
-    public WebTablesPage assertWebTablesMainText(String expectedResultText) {
-        webTablesMainText.should(Condition.partialText(expectedResultText));
+    @Step("Проверить заголовок таблицы: '{expectedText}'")
+    public WebTablesPage assertMainHeader(String expectedText) {
+        mainHeader.shouldHave(Condition.partialText(expectedText));
         return this;
     }
 
+    @Step("Нажать кнопку Add")
     public WebTablesPage clickAddButton() {
-        addButton.click();
+        addButton.shouldBe(Condition.visible).click();
         return this;
     }
 
-    public WebTablesPage setFirstName(String firstName) {
-        firstNameField.setValue(firstName);
+    @Step("Заполнить First Name: {value}")
+    public WebTablesPage setFirstName(String value) {
+        firstNameField.setValue(value);
         return this;
     }
 
-    public WebTablesPage setLastName(String lastName) {
-        lastNameField.setValue(lastName);
+    @Step("Заполнить Last Name: {value}")
+    public WebTablesPage setLastName(String value) {
+        lastNameField.setValue(value);
         return this;
     }
 
-    public WebTablesPage setEmail(String email) {
-        emailField.setValue(email);
+    @Step("Заполнить Email: {value}")
+    public WebTablesPage setEmail(String value) {
+        emailField.setValue(value);
         return this;
     }
 
-    public WebTablesPage setAge(String age) {
-        ageField.setValue(age);
+    @Step("Заполнить Age: {value}")
+    public WebTablesPage setAge(String value) {
+        ageField.setValue(value);
         return this;
     }
 
-    public WebTablesPage setSalary(String salary) {
-        salaryField.setValue(salary);
+    @Step("Заполнить Salary: {value}")
+    public WebTablesPage setSalary(String value) {
+        salaryField.setValue(value);
         return this;
     }
 
-    public WebTablesPage setDepartment(String department) {
-        departmentField.setValue(department);
+    @Step("Заполнить Department: {value}")
+    public WebTablesPage setDepartment(String value) {
+        departmentField.setValue(value);
         return this;
     }
 
+    @Step("Нажать Submit")
     public WebTablesPage submit() {
-        submitButton.click();
+        submitButton.shouldBe(Condition.enabled).click();
         return this;
     }
 
-    public WebTablesPage assertWebTableInputData(String expectedFirstName, String expectedLastName, String expectedEmail, String expectedAge, String expectedSalary, String expectedDepartment) {
-        actualFirstNameField.should(Condition.partialText(expectedFirstName));
-        actualLastNameField.should(Condition.partialText(expectedLastName));
-        actualEmailField.should(Condition.partialText(expectedEmail));
-        actualAgeField.should(Condition.partialText(expectedAge));
-        actualSalaryField.should(Condition.partialText(expectedSalary));
-        actualDepartmentField.should(Condition.partialText(expectedDepartment));
+    @Step("Проверить последнюю строку таблицы: {firstName}, {lastName}, {email}, {age}, {salary}, {department}")
+    public WebTablesPage assertLastRow(
+            String firstName,
+            String lastName,
+            String email,
+            String age,
+            String salary,
+            String department
+    ) {
+        tableRows.shouldBe(CollectionCondition.sizeGreaterThan(0));
+        ElementsCollection lastRowCells = tableRows.last().$$("div.rt-td");
+
+        lastRowCells.get(0).shouldHave(Condition.text(firstName));
+        lastRowCells.get(1).shouldHave(Condition.text(lastName));
+        lastRowCells.get(2).shouldHave(Condition.text(age));
+        lastRowCells.get(3).shouldHave(Condition.text(email));
+        lastRowCells.get(4).shouldHave(Condition.text(salary));
+        lastRowCells.get(5).shouldHave(Condition.text(department));
+
         return this;
     }
 
-    public WebTablesPage deleteRecord() {
-        deleteRecordButton.click();
+    @Step("Удалить последнюю запись")
+    public WebTablesPage deleteLastRow() {
+        tableRows.last().$x(".//span[@title='Delete']").click();
         return this;
     }
 
-    public WebTablesPage assertThatRecordDeleted() {
-        actualFirstNameField.shouldBe(Condition.empty);
-        actualLastNameField.shouldBe(Condition.empty);
-        actualEmailField.shouldBe(Condition.empty);
-        actualAgeField.shouldBe(Condition.empty);
-        actualSalaryField.shouldBe(Condition.empty);
-        actualDepartmentField.shouldBe(Condition.empty);
+    @Step("Проверить, что таблица пуста")
+    public WebTablesPage assertTableIsEmpty() {
+        tableRows.shouldHave(CollectionCondition.size(0));
         return this;
     }
 }

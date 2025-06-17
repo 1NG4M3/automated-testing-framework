@@ -4,234 +4,257 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import gusev.constants.PropertyConstants;
 import gusev.utils.PropertyManager;
-import lombok.Data;
+import io.qameta.allure.Step;
+import lombok.Getter;
 
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
-@Data
+@Getter
 public class MainPage {
 
-    private final SelenideElement textBoxInput = $x("//input[@type='text']");
-    private final SelenideElement element = $("#app > div > div > div > div > div:nth-child(1) > div > div.card-body > h5");
-    private final SelenideElement textBox = $x("//*[@id='item-0']/span");
-    private final SelenideElement checkBox = $x("//*[@id='item-1']/span");
-    private final SelenideElement radioButton = $x("//*[@id='item-2']/span");
-    private final SelenideElement webTablesButton = $x("//*[@id='item-3']/span");
-    private final SelenideElement buttons = $x("//*[@id='item-4']/span");
-    private final SelenideElement links = $x("//*[@id='item-5']/span");
-    private final SelenideElement brokenLinksAndImages = $x("//*[@id='item-6']/span");
-    private final SelenideElement uploadAndDownload = $x("//*[@id='item-7']/span");
-    private final SelenideElement dynamicProperties = $x("//*[@id='item-8']/span");
-    private final SelenideElement forms = $x("//*[contains(text(), 'Forms')]");
-    private final SelenideElement practiceForm = $x("//*[contains(text(), 'Practice Form')]");
-    private final SelenideElement alertsFrameWindows = $x("//*[contains(text(), 'Alerts, Frame & Windows')]");
-    private final SelenideElement browserWindows = $x("//*[contains(text(), 'Browser Windows')]");
-    private final SelenideElement alerts = $(byText("Alerts"));
-    private final SelenideElement frames = $(byText("Frames"));
-    private final SelenideElement nestedFrames = $(byText("Nested Frames"));
-    private final SelenideElement modalDialogs = $(byText("Modal Dialogs"));
+    private final SelenideElement element = $(byText("Elements"));
+    private final SelenideElement forms = $(byText("Forms"));
+    private final SelenideElement alertsFrameWindows = $(byText("Alerts, Frame & Windows"));
     private final SelenideElement widgets = $(byText("Widgets"));
-    private final SelenideElement accordian = $(byText("Accordian"));
-    private final SelenideElement autoComplete = $(byText("Auto Complete"));
-    private final SelenideElement datePicker = $(byText("Date Picker"));
-    private final SelenideElement slider = $(byText("Slider"));
-    private final SelenideElement progressBar = $(byText("Progress Bar"));
-    private final SelenideElement tabs = $(byText("Tabs"));
-    private final SelenideElement toolTips = $(byText("Tool Tips"));
-    private final SelenideElement menu = $(byText("Menu"));
-    private final SelenideElement selectMenu = $(byText("Select Menu"));
     private final SelenideElement interactions = $(byText("Interactions"));
-    private final SelenideElement sortable = $(byText("Sortable"));
-    private final SelenideElement selectable = $(byText("Selectable"));
-    private final SelenideElement resizable = $(byText("Resizable"));
-    private final SelenideElement droppable = $(byText("Droppable"));
-    private final SelenideElement dragabble = $(byText("Dragabble"));
     private final SelenideElement gameStoreApplication = $(byText("Game Store Application"));
-    private final SelenideElement linkPage = $(byText("Link Page"));
 
     public MainPage() {
         Selenide.open(PropertyManager.propHandler(PropertyConstants.CONFIG, "UI_HOST"));
     }
 
-    public TextBoxPage goToTextBox() {
+    private void openElementsBlock() {
         element.click();
-        textBox.click();
+    }
+
+    private void openWidgetsBlock() {
+        widgets.click();
+    }
+
+    private void openFormsBlock() {
+        forms.click();
+    }
+
+    private void openAlertsFrameWindowsBlock() {
+        alertsFrameWindows.click();
+    }
+
+    private void openInteractionsBlock() {
+        interactions.click();
+    }
+
+    private void openGameStoreAppBlock() {
+        gameStoreApplication.click();
+    }
+
+    @Step("Открыть Text Box")
+    public TextBoxPage goToTextBox() {
+        openElementsBlock();
+        $(byText("Text Box")).click();
         return new TextBoxPage();
     }
 
+    @Step("Открыть Check Box")
     public CheckBoxPage goToCheckBox() {
-        element.click();
-        checkBox.click();
+        openElementsBlock();
+        $(byText("Check Box")).click();
         return new CheckBoxPage();
     }
 
+    @Step("Открыть Radio Button")
     public RadioButtonPage goToRadioButton() {
-        element.click();
-        radioButton.click();
+        openElementsBlock();
+        $(byText("Radio Button")).click();
         return new RadioButtonPage();
     }
 
+    @Step("Открыть Web Tables")
     public WebTablesPage goToWebTables() {
-        element.click();
-        webTablesButton.click();
+        openElementsBlock();
+        $(byText("Web Tables")).click();
         return new WebTablesPage();
     }
 
+    @Step("Открыть Buttons")
     public ButtonsPage goToButtons() {
-        element.click();
-        buttons.click();
+        openElementsBlock();
+        $(byText("Buttons")).click();
         return new ButtonsPage();
     }
 
+    @Step("Открыть Links")
     public LinksPage goToLinks() {
-        element.click();
-        links.click();
+        openElementsBlock();
+        $(byText("Links")).click();
         return new LinksPage();
     }
 
+    @Step("Открыть Broken Links - Images")
     public BrokenLinksAndImagesPage goToBrokenLinksAndImages() {
-        element.click();
-        brokenLinksAndImages.click();
+        openElementsBlock();
+        $(byText("Broken Links - Images")).click();
         return new BrokenLinksAndImagesPage();
     }
 
+    @Step("Открыть Upload and Download")
     public UploadAndDownloadPage goToUploadAndDownload() {
-        element.click();
-        uploadAndDownload.click();
+        openElementsBlock();
+        $(byText("Upload and Download")).click();
         return new UploadAndDownloadPage();
     }
 
+    @Step("Открыть Dynamic Properties")
     public DynamicPropertiesPage goToDynamicProperties() {
-        element.click();
-        dynamicProperties.click();
+        openElementsBlock();
+        $(byText("Dynamic Properties")).click();
         return new DynamicPropertiesPage();
     }
 
+    @Step("Открыть Practice Form")
     public PracticeFormPage goToPracticeForm() {
-        forms.click();
-        practiceForm.click();
+        openFormsBlock();
+        $(byText("Practice Form")).click();
         return new PracticeFormPage();
     }
 
+    @Step("Открыть Browser Windows")
     public BrowserWindowsPage goToBrowserWindows() {
-        alertsFrameWindows.click();
-        browserWindows.click();
+        openAlertsFrameWindowsBlock();
+        $(byText("Browser Windows")).click();
         return new BrowserWindowsPage();
     }
 
+    @Step("Открыть Alerts")
     public AlertsPage goToAlerts() {
-        alertsFrameWindows.click();
-        alerts.click();
+        openAlertsFrameWindowsBlock();
+        $(byText("Alerts")).click();
         return new AlertsPage();
     }
 
+    @Step("Открыть Frames")
     public FramesPage goToFrames() {
-        alertsFrameWindows.click();
-        frames.click();
+        openAlertsFrameWindowsBlock();
+        $(byText("Frames")).click();
         return new FramesPage();
     }
 
+    @Step("Открыть Nested Frames")
     public NestedFramesPage goToNestedFrames() {
-        alertsFrameWindows.click();
-        nestedFrames.click();
+        openAlertsFrameWindowsBlock();
+        $(byText("Nested Frames")).click();
         return new NestedFramesPage();
     }
 
+    @Step("Открыть Modal Dialogs")
     public ModalDialogsPage goToModalDialogs() {
-        alertsFrameWindows.click();
-        modalDialogs.click();
+        openAlertsFrameWindowsBlock();
+        $(byText("Modal Dialogs")).click();
         return new ModalDialogsPage();
     }
 
+    @Step("Открыть Accordian")
     public AccordianPage goToAccordian() {
-        widgets.click();
-        accordian.click();
+        openWidgetsBlock();
+        $(byText("Accordian")).click();
         return new AccordianPage();
     }
 
+    @Step("Открыть Auto Complete")
     public AutoCompletePage goToAutoComplete() {
-        widgets.click();
-        autoComplete.click();
+        openWidgetsBlock();
+        $(byText("Auto Complete")).click();
         return new AutoCompletePage();
     }
 
+    @Step("Открыть Date Picker")
     public DatePickerPage goToDatePicker() {
-        widgets.click();
-        datePicker.click();
+        openWidgetsBlock();
+        $(byText("Date Picker")).click();
         return new DatePickerPage();
     }
 
+    @Step("Открыть Slider")
     public SliderPage goToSlider() {
-        widgets.click();
-        slider.click();
+        openWidgetsBlock();
+        $(byText("Slider")).click();
         return new SliderPage();
     }
 
+    @Step("Открыть Progress Bar")
     public ProgressBarPage goToProgressBar() {
-        widgets.click();
-        progressBar.click();
+        openWidgetsBlock();
+        $(byText("Progress Bar")).click();
         return new ProgressBarPage();
     }
 
+    @Step("Открыть Tabs")
     public TabsPage goToTabs() {
-        widgets.click();
-        tabs.click();
+        openWidgetsBlock();
+        $(byText("Tabs")).click();
         return new TabsPage();
     }
 
+    @Step("Открыть Tool Tips")
     public ToolTipsPage goToToolTips() {
-        widgets.click();
-        toolTips.click();
+        openWidgetsBlock();
+        $(byText("Tool Tips")).click();
         return new ToolTipsPage();
     }
 
+    @Step("Открыть Menu")
     public MenuPage goToMenu() {
-        widgets.click();
-        menu.click();
+        openWidgetsBlock();
+        $(byText("Menu")).click();
         return new MenuPage();
     }
 
+    @Step("Открыть Select Menu")
     public SelectMenuPage goToSelectMenu() {
-        widgets.click();
-        selectMenu.click();
+        openWidgetsBlock();
+        $(byText("Select Menu")).click();
         return new SelectMenuPage();
     }
 
+    @Step("Открыть Sortable")
     public SortablePage goToSortable() {
-        interactions.click();
-        sortable.click();
+        openInteractionsBlock();
+        $(byText("Sortable")).click();
         return new SortablePage();
     }
 
+    @Step("Открыть Selectable")
     public SelectablePage goToSelectable() {
-        interactions.click();
-        selectable.click();
+        openInteractionsBlock();
+        $(byText("Selectable")).click();
         return new SelectablePage();
     }
 
+    @Step("Открыть Resizable")
     public ResizablePage goToResizable() {
-        interactions.click();
-        resizable.click();
+        openInteractionsBlock();
+        $(byText("Resizable")).click();
         return new ResizablePage();
     }
 
+    @Step("Открыть Droppable")
     public DroppablePage goToDroppable() {
-        interactions.click();
-        droppable.click();
+        openInteractionsBlock();
+        $(byText("Droppable")).click();
         return new DroppablePage();
     }
 
+    @Step("Открыть Dragabble")
     public DragabblePage goToDragabble() {
-        interactions.click();
-        dragabble.click();
+        openInteractionsBlock();
+        $(byText("Dragabble")).click();
         return new DragabblePage();
     }
 
+    @Step("Открыть Game Store Link Page")
     public LinkPage goToLinkPage() {
-        gameStoreApplication.click();
-        linkPage.click();
+        openGameStoreAppBlock();
+        $(byText("Link Page")).click();
         return new LinkPage();
     }
 }

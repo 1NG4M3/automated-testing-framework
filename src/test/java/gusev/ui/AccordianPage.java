@@ -1,11 +1,13 @@
 package gusev.ui;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class AccordianPage {
+
     private final SelenideElement mainText = $x("//*[@class='main-header']");
     private final SelenideElement section1Heading = $x("//*[@id='section1Heading']");
     private final SelenideElement section2Heading = $x("//*[@id='section2Heading']");
@@ -14,43 +16,36 @@ public class AccordianPage {
     private final SelenideElement section2Content = $x("//*[@id='section2Content']");
     private final SelenideElement section3Content = $x("//*[@id='section3Content']");
 
+    @Step("Проверка основного заголовка Accordian: должен содержать текст '{expectedText}'")
     public AccordianPage assertMainText(String expectedText) {
-        mainText
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedText));
+        mainText.shouldBe(visible)
+                .shouldHave(partialText(expectedText));
         return this;
     }
 
-    public AccordianPage assertFirstAccordian(String expectedAccordianTitle, String expectedAccordianContent) {
-        section1Heading
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianTitle))
-                .click();
-        section1Content
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianContent));
-        return this;
+    @Step("Проверка первого аккордеона")
+    public AccordianPage assertFirstAccordian(String expectedTitle, String expectedContent) {
+        return assertAccordianSection(section1Heading, section1Content, expectedTitle, expectedContent);
     }
 
-    public AccordianPage assertSecondAccordian(String expectedAccordianTitle, String expectedAccordianContent) {
-        section2Heading
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianTitle))
-                .click();
-        section2Content
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianContent));
-        return this;
+    @Step("Проверка второго аккордеона")
+    public AccordianPage assertSecondAccordian(String expectedTitle, String expectedContent) {
+        return assertAccordianSection(section2Heading, section2Content, expectedTitle, expectedContent);
     }
 
-    public AccordianPage assertThirdAccordian(String expectedAccordianTitle, String expectedAccordianContent) {
-        section3Heading
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianTitle))
+    @Step("Проверка третьего аккордеона")
+    public AccordianPage assertThirdAccordian(String expectedTitle, String expectedContent) {
+        return assertAccordianSection(section3Heading, section3Content, expectedTitle, expectedContent);
+    }
+
+    @Step("Проверка секции аккордеона: заголовок '{expectedTitle}', содержимое '{expectedContent}'")
+    private AccordianPage assertAccordianSection(SelenideElement heading, SelenideElement content,
+                                                 String expectedTitle, String expectedContent) {
+        heading.shouldBe(visible, enabled)
+                .shouldHave(partialText(expectedTitle))
                 .click();
-        section3Content
-                .shouldBe(Condition.visible)
-                .should(Condition.partialText(expectedAccordianContent));
+        content.shouldBe(visible)
+                .shouldHave(partialText(expectedContent));
         return this;
     }
 }
