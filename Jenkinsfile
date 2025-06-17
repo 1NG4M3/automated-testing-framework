@@ -9,6 +9,8 @@ pipeline {
 
     environment {
         GRADLE_OPTS = "-Dorg.gradle.daemon=false"
+        JAVA_HOME = "${tool 'jdk17'}"
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
@@ -17,6 +19,12 @@ pipeline {
                 git url: 'https://github.com/1NG4M3/automated-testing-framework', branch: 'master'
             }
         }
+
+        stage('Check Java') {
+                    steps {
+                        sh 'java -version'
+                    }
+                }
 
         stage('Fix gradlew') {
             steps {
