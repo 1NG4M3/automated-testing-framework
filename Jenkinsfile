@@ -31,7 +31,7 @@ pipeline {
                     steps {
                         dir("${env.WORKSPACE}") {
                             sh '''
-                                ./gradlew test --tests "*FilesControllerTest" \
+                                sh 'pwd && ls -la' ./gradlew test --tests "*FilesControllerTest" \
                                                --tests "*GameControllerTest" \
                                                --tests "*JwtAuthenticationControllerTest" \
                                                --tests "*ResponseTrainControllerTest" \
@@ -45,7 +45,7 @@ pipeline {
                     steps {
                         dir("${env.WORKSPACE}") {
                             sh '''
-                                ./gradlew test --tests "*AlertsFrameWindowsTest" \
+                                sh 'pwd && ls -la' ./gradlew test --tests "*AlertsFrameWindowsTest" \
                                                --tests "*ElementsTest" \
                                                --tests "*FormsTest" \
                                                --tests "*GameStoreApplicationTest" \
