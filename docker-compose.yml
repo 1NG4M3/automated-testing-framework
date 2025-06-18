@@ -20,7 +20,11 @@ services:
     shm_size: 2g
     ports:
       - "9515:9515"
-    command: chromedriver --url-base=/ --port=9515 --whitelisted-ips=
+    command: >
+      chromedriver
+      --port=9515
+      --whitelisted-ips=
+      --allowed-origins=*
 
 volumes:
   jenkins_home:
