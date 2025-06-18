@@ -11,11 +11,11 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-    user: root # обязательно, чтобы иметь доступ к установке
+    user: root
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-    tty: true # для xvfb
-    privileged: true # для запуска Chrome в контейнере
+    tty: true
+    privileged: true
 
 volumes:
   jenkins_home:
