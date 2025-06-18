@@ -1,0 +1,33 @@
+FROM jenkins/jenkins:lts
+
+USER root
+
+# Обновляем пакеты и ставим зависимости
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    gnupg \
+    libglib2.0-0 \
+    libnss3 \
+    libgconf-2-4 \
+    libfontconfig1 \
+    libx11-xcb1 \
+    xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка Google Chrome
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+    sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list' && \
+    apt-get update && apt-get install -y google-chrome-stable
+
+# Установка ChromeDriver соответствующей версии
+ARG CHROME_DRIVER_VERSION=124.0.6367.91
+RUN wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip && \
+    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+    chmod +x /usr/local/bin/chromedriver && \
+    rm /tmp/chromedriver.zip
+
+# Установка Java
+RUN apt-get update && apt-get install -y openjdk-17-jdk
+
+USER jenkins
