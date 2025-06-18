@@ -14,10 +14,13 @@ services:
       - chrome
 
   chrome:
-    image: zenika/alpine-chrome:with-node
+    build:
+      context: .
+      dockerfile: Dockerfile.chrome
     shm_size: 2g
-    environment:
-      - START_XVFB=true
+    ports:
+      - "9515:9515"
+    command: chromedriver --url-base=/ --port=9515 --whitelisted-ips=
 
 volumes:
   jenkins_home:

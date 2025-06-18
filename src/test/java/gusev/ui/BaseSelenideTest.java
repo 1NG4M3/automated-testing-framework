@@ -15,6 +15,7 @@ abstract public class BaseSelenideTest {
      * Инициализация selenide с настройками
      */
     public void setUp() {
+        Configuration.remote = "http://chrome:9515";
         Configuration.browser = "chrome";
 //        Configuration.browserSize = "1920x1080"; // Пока не нужно, при запуске на Jenkins.
         Configuration.headless = true;

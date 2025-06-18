@@ -1,0 +1,17 @@
+FROM alpine:3.19
+
+# Установим зависимости
+RUN apk add --no-cache \
+    chromium \
+    chromium-chromedriver \
+    udev \
+    ttf-freefont \
+    curl \
+    bash
+
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROMEDRIVER=/usr/bin/chromedriver
+
+EXPOSE 9515
+
+CMD ["chromedriver", "--port=9515", "--whitelisted-ips="]
