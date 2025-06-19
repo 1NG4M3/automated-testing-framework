@@ -67,12 +67,6 @@ pipeline {
             }
         }
 
-        stage('Generate Allure Report') {
-            steps {
-                sh './gradlew allureReport'
-            }
-        }
-
         stage('Publish Allure Report') {
             steps {
                 allure includeProperties: false, jdk: '', results: [[path: 'build/allure-results']]
