@@ -14,16 +14,14 @@ abstract public class BaseSelenideTest {
     /**
      * Инициализация selenide с настройками
      */
-    public void setUp() {
+    public static void setUp() {
         Configuration.remote = "http://chrome:9515";
         Configuration.browser = "chrome";
-//        Configuration.browserSize = "1920x1080"; // Пока не нужно, при запуске на Jenkins.
         Configuration.headless = true;
-        Configuration.browserCapabilities = new ChromeOptions()
-                .addArguments("--no-sandbox")
-                .addArguments("--disable-dev-shm-usage")
-                .addArguments("--disable-gpu")
-                .addArguments("--remote-allow-origins=*");
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
+        Configuration.browserCapabilities = options;
     }
 
     /**

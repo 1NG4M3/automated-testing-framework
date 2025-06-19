@@ -7,6 +7,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,13 @@ import org.junit.jupiter.params.provider.CsvSource;
 @Owner("Гусев Дмитрий Викторович")
 public class FormsTest extends BaseSelenideTest {
 
-    private MainPage page = new MainPage();
+    private MainPage page;
+
+    @BeforeEach
+    public void beforeEach() {
+        super.init();
+        page = new MainPage();
+    }
 
     @CsvSource(value = {
             "Practice Form, Student Registration Form, Dmitry, Gusev, d.gusev@mail.ru, Male, 9522280353, Maths, Saint P. Russia, NCR, Delhi, MyPhotoForUpload.jpeg, Sports, 02 December"

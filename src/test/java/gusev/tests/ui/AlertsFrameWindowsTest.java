@@ -3,6 +3,7 @@ package gusev.tests.ui;
 import gusev.ui.BaseSelenideTest;
 import gusev.ui.MainPage;
 import io.qameta.allure.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Owner("Гусев Дмитрий Викторович")
 public class AlertsFrameWindowsTest extends BaseSelenideTest {
 
-    private final MainPage page = new MainPage();
+    private MainPage page;
+
+    @BeforeEach
+    public void beforeEach() {
+        super.init();
+        page = new MainPage();
+    }
 
     @ParameterizedTest(name = "Проверка {2}: {0}")
     @MethodSource("browserWindowsData")
