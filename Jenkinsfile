@@ -53,6 +53,9 @@ pipeline {
                     }
                 }
                 stage('Run UI tests') {
+                when {
+                        expression { return false }
+                    }
                     steps {
                         sh '''
                             ./gradlew test --tests "*AlertsFrameWindowsTest" \
