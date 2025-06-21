@@ -27,6 +27,10 @@ dependencies {
 }
 
 test {
+    doFirst {
+        println "🧹 Очистка build/allure-results перед запуском"
+        delete fileTree("${buildDir}/allure-results")
+    }
     useJUnitPlatform {
         if (project.hasProperty("includeTags")) {
             includeTags project.getProperty("includeTags")
