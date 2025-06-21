@@ -10,11 +10,13 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static gusev.api.CreateAuthenticationToken.createAuthToken;
 import static gusev.utils.TestUserGenerator.generateUniqueUser;
 
+@Tag("api")
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")

@@ -12,6 +12,7 @@ import static gusev.api.GameController.*;
 import static gusev.utils.TestUserGenerator.generateUniqueUser;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Tag("api")
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")

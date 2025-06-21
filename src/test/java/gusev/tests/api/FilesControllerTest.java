@@ -3,6 +3,7 @@ package gusev.tests.api;
 import gusev.api.BaseRestAssuredTest;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.nio.file.Paths;
 import static gusev.api.FilesController.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("api")
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")

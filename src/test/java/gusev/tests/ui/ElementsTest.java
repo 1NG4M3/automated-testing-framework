@@ -5,12 +5,14 @@ import gusev.ui.MainPage;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
+@Tag("ui")
 @Epic("Regression")
 @Feature("UI")
 @Story("Elements health check")

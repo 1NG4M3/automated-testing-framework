@@ -7,6 +7,10 @@ pipeline {
         allure 'Allure'
     }
 
+    parameters {
+        choice(name: 'TEST_TYPE', choices: ['ALL', 'API', 'UI'], description: 'Какие тесты запускать')
+    }
+
     environment {
         GRADLE_OPTS = "-Dorg.gradle.daemon=false"
         JAVA_HOME = "${tool 'jdk17'}"
@@ -38,11 +42,16 @@ pipeline {
             }
         }
 
-        stage('Run Tests in Parallel') {
+        stage('Run Selected Tests') {
             parallel {
-                stage('Run API tests') {
+                stage('Run API Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_TYPE == 'API' }
+                            expression { params.TEST_TYPE == 'ALL' }
+                        }
+                    }
                     steps {
-                        // Даже если упадёт, Allure всё равно сработает
                         sh '''
                             ./gradlew test --tests "*FilesControllerTest" \
                                            --tests "*GameControllerTest" \
@@ -54,7 +63,13 @@ pipeline {
                     }
                 }
 
-                stage('Run UI tests') {
+                stage('Run UI Tests') {
+                    when {
+                        anyOf {
+                            expression { params.TEST_TYPE == 'UI' }
+                            expression { params.TEST_TYPE == 'ALL' }
+                        }
+                    }
                     steps {
                         sh '''
                             ./gradlew test --tests "*AlertsFrameWindowsTest" \

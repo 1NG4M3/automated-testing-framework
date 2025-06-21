@@ -9,10 +9,12 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static gusev.utils.Texts.*;
 
+@Tag("ui")
 @Epic("Regression")
 @Feature("UI")
 @Story("Widgets health check")

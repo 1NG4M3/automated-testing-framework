@@ -27,7 +27,11 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (project.hasProperty("groups")) {
+            includeTags project.getProperty("groups")
+        }
+    }
     maxParallelForks = 2
     testLogging {
         events "passed", "skipped", "failed"

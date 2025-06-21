@@ -5,11 +5,13 @@ import gusev.dto.StatusRequestResponse;
 import io.qameta.allure.*;
 import org.apache.http.ProtocolException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static gusev.api.StatusCodesController.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("api")
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")

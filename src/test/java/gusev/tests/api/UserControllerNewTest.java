@@ -12,6 +12,7 @@ import static gusev.api.CreateAuthenticationToken.*;
 import static gusev.utils.TestUserGenerator.generateUniqueUser;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("api")
 @Epic("Regression")
 @Feature("API")
 @Owner("Гусев Дмитрий Викторович")

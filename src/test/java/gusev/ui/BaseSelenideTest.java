@@ -15,13 +15,14 @@ abstract public class BaseSelenideTest {
      * Инициализация selenide с настройками
      */
     public static void setUp() {
-        Configuration.remote = "http://chrome:9515";
+//        Configuration.remote = "http://chrome:9515";
         Configuration.browser = "chrome";
-        Configuration.headless = true;
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
-        Configuration.browserCapabilities = options;
+//        Configuration.headless = true;
+        Configuration.headless = false;
+        Configuration.browserSize = "1920x1080";
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--no-sandbox", "--disable-dev-shm-usage");
+//        Configuration.browserCapabilities = options;
     }
 
     /**
