@@ -22,14 +22,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 @Owner("Гусев Дмитрий Викторович")
 public class FormsTest extends BaseSelenideTest {
 
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
-
     @CsvSource(value = {
             "Practice Form, Student Registration Form, Dmitry, Gusev, d.gusev@mail.ru, Male, 9522280353, Maths, Saint P. Russia, NCR, Delhi, MyPhotoForUpload.jpeg, Sports, 02 December"
     })

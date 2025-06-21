@@ -1,9 +1,7 @@
 package gusev.tests.ui;
 
 import gusev.ui.BaseSelenideTest;
-import gusev.ui.MainPage;
 import io.qameta.allure.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,14 +19,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Story("Alerts, Frame & Windows health check")
 @Owner("Гусев Дмитрий Викторович")
 public class AlertsFrameWindowsTest extends BaseSelenideTest {
-
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
 
     @ParameterizedTest(name = "Проверка {2}: {0}")
     @MethodSource("browserWindowsData")

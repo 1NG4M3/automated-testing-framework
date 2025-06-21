@@ -11,6 +11,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 abstract public class BaseSelenideTest {
 
+    protected MainPage page;
     /**
      * Инициализация selenide с настройками
      */
@@ -31,6 +32,7 @@ abstract public class BaseSelenideTest {
     @BeforeEach
     public void init() {
         setUp();
+        page = new MainPage();
     }
 
     /**

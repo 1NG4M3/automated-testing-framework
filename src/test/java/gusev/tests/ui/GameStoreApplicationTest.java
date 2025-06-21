@@ -18,14 +18,6 @@ import org.junit.jupiter.api.Test;
 @Owner("Гусев Дмитрий Викторович")
 public class GameStoreApplicationTest extends BaseSelenideTest {
 
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
-
     @Test
     @DisplayName("Link Page positive check")
     public void positiveLinkPageTest() {

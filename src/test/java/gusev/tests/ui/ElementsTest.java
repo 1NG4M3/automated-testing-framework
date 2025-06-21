@@ -19,14 +19,6 @@ import java.io.FileNotFoundException;
 @Owner("Гусев Дмитрий Викторович")
 public class ElementsTest extends BaseSelenideTest {
 
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
-
     @Test
     @DisplayName("Text box positive check")
     void positiveTextBoxTest() {

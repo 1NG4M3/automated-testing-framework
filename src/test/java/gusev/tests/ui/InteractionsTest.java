@@ -17,14 +17,6 @@ import java.util.List;
 @Owner("Гусев Дмитрий Викторович")
 public class InteractionsTest extends BaseSelenideTest {
 
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
-
     @Test
     @DisplayName("Sortable positive check")
     public void positiveSortableTest() {

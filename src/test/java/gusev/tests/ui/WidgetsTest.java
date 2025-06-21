@@ -21,14 +21,6 @@ import static gusev.utils.Texts.*;
 @Owner("Гусев Дмитрий Викторович")
 public class WidgetsTest extends BaseSelenideTest {
 
-    private MainPage page;
-
-    @BeforeEach
-    public void beforeEach() {
-        super.init();
-        page = new MainPage();
-    }
-
     // -------- Accordian Section --------
     @Test
     @DisplayName("Check Accordian content")
