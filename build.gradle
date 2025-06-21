@@ -23,7 +23,7 @@ dependencies {
     testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
     testImplementation 'com.codeborne:selenide:6.17.1'
-    testImplementation 'io.qameta.allure:allure-junit5:2.21.0'
+    testImplementation 'io.qameta.allure:allure-junit5:2.25.0'
 }
 
 test {
