@@ -28,8 +28,11 @@ dependencies {
 
 test {
     useJUnitPlatform {
-        if (project.hasProperty("groups")) {
-            includeTags project.getProperty("groups")
+        if (project.hasProperty("includeTags")) {
+            includeTags project.getProperty("includeTags")
+        }
+        if (project.hasProperty("excludeTags")) {
+            excludeTags project.getProperty("excludeTags")
         }
     }
     maxParallelForks = 2
